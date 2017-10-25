@@ -200,21 +200,6 @@ namespace SafeApp.AppBindings {
 
     #endregion
 
-    #region CipherOptNewSymmetric
-
-    public void CipherOptNewSymmetric(IntPtr appPtr, UlongCb callback) {
-      CipherOptNewPlaintextNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
-    }
-
-#if __IOS__
-    [DllImport("__Internal", EntryPoint = "cipher_opt_new_symmetric")]
-#elif __ANDROID__
-    [DllImport("safe_app", EntryPoint = "cipher_opt_new_symmetric")]
-#endif
-    public static extern void CipherOptNewSymmetricNative(IntPtr appPtr, IntPtr self, UlongCb callback);
-
-    #endregion
-
     #region DecodeIpcMessage
 
     public void DecodeIpcMessage(
@@ -224,7 +209,7 @@ namespace SafeApp.AppBindings {
       DecodeContCb contCb,
       DecodeShareMDataCb shareMDataCb,
       DecodeRevokedCb revokedCb,
-      ResultCb errorCb) {
+      DecodeErrorCb errorCb) {
       var cbs = new List<object> {authCb, unregCb, contCb, shareMDataCb, revokedCb, errorCb};
       DecodeIpcMessageNative(
         encodedReq,
@@ -234,7 +219,7 @@ namespace SafeApp.AppBindings {
         OnDecodeContCb,
         OnDecodeShareMDataCb,
         OnDecodeRevokedCb,
-        OnResultCb);
+        OnDecodeErrorCb);
     }
 
 #if __IOS__
@@ -250,7 +235,7 @@ namespace SafeApp.AppBindings {
       DecodeContCb contCb,
       DecodeShareMDataCb shareMDataCb,
       DecodeRevokedCb revokedCb,
-      ResultCb errorCb);
+      DecodeErrorCb errorCb);
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(DecodeAuthCb))]
@@ -291,6 +276,16 @@ namespace SafeApp.AppBindings {
       var cb = (DecodeRevokedCb)self.HandlePtrToType<List<object>>()[4];
       cb(IntPtr.Zero);
     }
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(DecodeErrorCb))]
+#endif
+    private static void OnDecodeErrorCb(IntPtr self, FfiResult result)
+    {
+      var cb = (DecodeErrorCb)self.HandlePtrToType<List<object>>()[5];
+      cb(IntPtr.Zero, result);
+    }
+
 
     #endregion
 

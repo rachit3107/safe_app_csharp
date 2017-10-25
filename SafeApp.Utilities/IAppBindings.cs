@@ -13,7 +13,6 @@ namespace SafeApp.Utilities {
     void AppSetAdditionalSearchPath(string path, ResultCb callback);
     void CipherOptFree(IntPtr appPtr, ulong cipherOptHandle, ResultCb callback);
     void CipherOptNewPlaintext(IntPtr appPtr, UlongCb callback);
-    void CipherOptNewSymmetric(IntPtr appPtr, UlongCb callback);
 
     void DecodeIpcMessage(
       string encodedReq,
@@ -22,7 +21,7 @@ namespace SafeApp.Utilities {
       DecodeContCb contCb,
       DecodeShareMDataCb shareMDataCb,
       DecodeRevokedCb revokedCb,
-      ResultCb errorCb);
+      DecodeErrorCb errorCb);
 
     void DecryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, ulong skHandle, ByteArrayCb callback);
     void EncGenerateKeyPair(IntPtr appPtr, EncGenerateKeyPairCb callback);

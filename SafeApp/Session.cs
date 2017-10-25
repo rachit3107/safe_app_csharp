@@ -92,7 +92,7 @@ namespace SafeApp {
           DecodeContCb contCb = (_, id) => { tcs.SetResult(new DecodeIpcResult {ContReqId = id}); };
           DecodeShareMDataCb shareMDataCb = (_, id) => { tcs.SetResult(new DecodeIpcResult {ShareMData = id}); };
           DecodeRevokedCb revokedCb = _ => { tcs.SetResult(new DecodeIpcResult {Revoked = true}); };
-          ResultCb errorCb = (_, result) => { tcs.SetException(result.ToException()); };
+          DecodeErrorCb errorCb = (_, result) => { tcs.SetException(result.ToException()); };
 
           AppBindings.DecodeIpcMessage(encodedReq, authCb, unregCb, contCb, shareMDataCb, revokedCb, errorCb);
 

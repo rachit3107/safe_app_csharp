@@ -3,6 +3,8 @@
 namespace SafeApp.Utilities {
   public delegate void ResultCb(IntPtr self, FfiResult result);
 
+  public delegate void DecodeErrorCb(IntPtr self, FfiResult result);
+
   public delegate void StringCb(IntPtr self, FfiResult result, string exeFileStem);
 
   public delegate void ByteArrayCb(IntPtr self, FfiResult result, IntPtr arrayIntPtr, IntPtr len);
