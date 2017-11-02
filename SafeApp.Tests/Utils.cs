@@ -6,7 +6,7 @@ using SafeApp.MockAuthBindings;
 
 namespace SafeApp.Tests
 {
-    class Utils
+    internal class Utils
     {
       public static void InitialiseSessionForRandomTestApp() {
         var appPtr = IntPtr.Zero;
