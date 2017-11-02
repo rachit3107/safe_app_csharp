@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
-using SafeApp.MockAuthBindings;
+﻿using System;
+using NUnit.Framework;
 using SafeApp.MData;
+using SafeApp.MockAuthBindings;
 
 namespace SafeApp.Tests {
   [TestFixture]
