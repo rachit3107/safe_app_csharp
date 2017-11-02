@@ -21,7 +21,7 @@ namespace SafeApp.MData {
         entries.Add((entryKey, entryVal, entryVersion));
       };
 
-      ResultCb forEachResCb = (_, result) => {
+      ListBasedResultCb forEachResCb = (_, result) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;

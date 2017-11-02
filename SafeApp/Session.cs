@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -92,7 +93,7 @@ namespace SafeApp {
           DecodeContCb contCb = (_, id) => { tcs.SetResult(new DecodeIpcResult {ContReqId = id}); };
           DecodeShareMDataCb shareMDataCb = (_, id) => { tcs.SetResult(new DecodeIpcResult {ShareMData = id}); };
           DecodeRevokedCb revokedCb = _ => { tcs.SetResult(new DecodeIpcResult {Revoked = true}); };
-          DecodeErrorCb errorCb = (_, result) => { tcs.SetException(result.ToException()); };
+          ListBasedResultCb errorCb = (_, result) => { tcs.SetException(result.ToException()); };
 
           AppBindings.DecodeIpcMessage(encodedReq, authCb, unregCb, contCb, shareMDataCb, revokedCb, errorCb);
 
@@ -103,11 +104,19 @@ namespace SafeApp {
     public static Task<string> EncodeAuthReqAsync(AuthReq authReq) {
       return Task.Run(
         () => {
+          if (authReq.Containers == null) {
+            authReq.Containers = new List<ContainerPermissions>();
+          }
           var tcs = new TaskCompletionSource<string>();
+          if (String.IsNullOrEmpty(authReq.AppExchangeInfo.Name) || String.IsNullOrEmpty(authReq.AppExchangeInfo.Id) ||
+              String.IsNullOrEmpty(authReq.AppExchangeInfo.Vendor)) {
+            tcs.SetException(new ArgumentException("Name, Id, Vendor Fields are mandatory for AppExchageInfo"));
+            return tcs.Task;
+          }
           var authReqFfi = new AuthReqFfi {
             AppContainer = authReq.AppContainer,
             AppExchangeInfo = authReq.AppExchangeInfo,
-            ContainersLen = (IntPtr)authReq.Containers.Count,
+            ContainersLen = (IntPtr) authReq.Containers.Count,
             ContainersArrayPtr = authReq.Containers.ToIntPtr()
           };
           var authReqFfiPtr = Helpers.StructToPtr(authReqFfi);

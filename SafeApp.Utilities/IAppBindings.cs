@@ -21,7 +21,7 @@ namespace SafeApp.Utilities {
       DecodeContCb contCb,
       DecodeShareMDataCb shareMDataCb,
       DecodeRevokedCb revokedCb,
-      DecodeErrorCb errorCb);
+      ListBasedResultCb errorCb);
 
     void DecryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, ulong skHandle, ByteArrayCb callback);
     void EncGenerateKeyPair(IntPtr appPtr, EncGenerateKeyPairCb callback);
@@ -35,7 +35,7 @@ namespace SafeApp.Utilities {
     void EncSecretKeyNew(IntPtr appPtr, IntPtr asymSecretKey, UlongCb callback);
     void FreeApp(IntPtr appPtr);
 
-    void MDataEntriesForEach(IntPtr appPtr, ulong entriesHandle, MDataEntriesForEachCb forEachCallback, ResultCb resultCallback);
+    void MDataEntriesForEach(IntPtr appPtr, ulong entriesHandle, MDataEntriesForEachCb forEachCallback, ListBasedResultCb resultCallback);
 
     void MDataEntriesFree(IntPtr appPtr, ulong entriesHandle, ResultCb callback);
 
