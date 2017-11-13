@@ -21,9 +21,10 @@ namespace SafeApp.Tests {
     [Test]
     public async void GetAppPubSignKey() {
       Utils.InitialiseSessionForRandomTestApp();
-      var handle = await Crypto.AppPubSignKeyAsync();
-      Assert.NotNull(handle);
-      await Crypto.SignKeyFreeAsync(handle);
+      using (var handle = await Crypto.AppPubSignKeyAsync())
+      {
+        Assert.NotNull(handle);
+      }
     }
 
     [Test]

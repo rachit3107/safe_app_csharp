@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -104,19 +103,22 @@ namespace SafeApp {
     public static Task<string> EncodeAuthReqAsync(AuthReq authReq) {
       return Task.Run(
         () => {
-          if (authReq.Containers == null) {
-            authReq.Containers = new List<ContainerPermissions>();
-          }
           var tcs = new TaskCompletionSource<string>();
-          if (String.IsNullOrEmpty(authReq.AppExchangeInfo.Name) || String.IsNullOrEmpty(authReq.AppExchangeInfo.Id) ||
-              String.IsNullOrEmpty(authReq.AppExchangeInfo.Vendor)) {
-            tcs.SetException(new ArgumentException("Name, Id, Vendor Fields are mandatory for AppExchageInfo"));
+          if (authReq.Containers == null) {
+            tcs.SetException(new ArgumentNullException($"{nameof(authReq.Containers)} OperationCanceledException not be null"));
+            return tcs.Task;
+          }
+          if (string.IsNullOrEmpty(authReq.AppExchangeInfo.Name) || string.IsNullOrEmpty(authReq.AppExchangeInfo.Id) ||
+              string.IsNullOrEmpty(authReq.AppExchangeInfo.Vendor)) {
+            tcs.SetException(
+              new ArgumentException(
+                $"{nameof(authReq.AppExchangeInfo.Name)}, {nameof(authReq.AppExchangeInfo.Id)}, {nameof(authReq.AppExchangeInfo.Vendor)} Fields are mandatory for AppExchageInfo"));
             return tcs.Task;
           }
           var authReqFfi = new AuthReqFfi {
             AppContainer = authReq.AppContainer,
             AppExchangeInfo = authReq.AppExchangeInfo,
-            ContainersLen = (IntPtr) authReq.Containers.Count,
+            ContainersLen = (IntPtr)authReq.Containers.Count,
             ContainersArrayPtr = authReq.Containers.ToIntPtr()
           };
           var authReqFfiPtr = Helpers.StructToPtr(authReqFfi);

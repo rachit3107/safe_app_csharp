@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using SafeApp.Utilities;
 
@@ -31,7 +32,7 @@ namespace SafeApp.Tests {
     [Test]
     public void EncodeAuthRequestWithContainersAsNull() {
       var authReq = new AuthReq {AppContainer = false, AppExchangeInfo = GetExchangeInfo(), Containers = null};
-      Assert.DoesNotThrow(async () => await Session.EncodeAuthReqAsync(authReq));
+      Assert.Throws<ArgumentNullException>(async () => await Session.EncodeAuthReqAsync(authReq));
     }
 
     [Test]
