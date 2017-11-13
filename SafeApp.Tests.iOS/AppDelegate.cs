@@ -9,10 +9,10 @@ namespace SafeApp.Tests.iOS {
   // application events from iOS.
   [Register("AppDelegate")]
   public class AppDelegate : UIApplicationDelegate {
-    private TouchRunner runner;
+    private TouchRunner _runner;
 
     // class-level declarations
-    private UIWindow window;
+    private UIWindow _window;
 
     //
     // This method is invoked when the application has loaded and is ready to run. In this 
@@ -23,16 +23,16 @@ namespace SafeApp.Tests.iOS {
     //
     public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
       // create a new window instance based on the screen size
-      window = new UIWindow(UIScreen.MainScreen.Bounds);
-      runner = new TouchRunner(window);
+      _window = new UIWindow(UIScreen.MainScreen.Bounds);
+      _runner = new TouchRunner(_window);
 
       // register every tests included in the main application/assembly
-      runner.Add(Assembly.GetExecutingAssembly());
+      _runner.Add(Assembly.GetExecutingAssembly());
 
-      window.RootViewController = new UINavigationController(runner.GetViewController());
+      _window.RootViewController = new UINavigationController(_runner.GetViewController());
 
       // make the window visible
-      window.MakeKeyAndVisible();
+      _window.MakeKeyAndVisible();
 
       return true;
     }

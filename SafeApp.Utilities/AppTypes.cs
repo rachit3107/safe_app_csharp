@@ -39,12 +39,6 @@ namespace SafeApp.Utilities {
     public AppExchangeInfo AppExchangeInfo;
     public bool AppContainer;
     public List<ContainerPermissions> Containers;
-
-    public AuthReq(AppExchangeInfo appExchangeInfo, bool appContainer, List<ContainerPermissions> containerPermissions) {
-      AppExchangeInfo = appExchangeInfo;
-      AppContainer = appContainer;
-      Containers = containerPermissions ?? new List<ContainerPermissions>();
-    }
   }
 
   public struct AuthReqFfi {

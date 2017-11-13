@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{4C986A9E-DCD2-4C20-AD68-D91FA50F5A48}"
 EndProject
@@ -32,14 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeApp.Tests.Android", "Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeApp.Tests.iOS", "SafeApp.Tests.iOS\SafeApp.Tests.iOS.csproj", "{9CF3C153-4898-4887-AA6B-BAE04B6461C3}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SafeApp.Tests", "SafeApp.Tests\SafeApp.Tests.shproj", "{E74DCA2D-89ED-4F4A-BE96-91BCDE7EF758}"
-EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SafeApp.Tests\SafeApp.Tests.projitems*{9cf3c153-4898-4887-aa6b-bae04b6461c3}*SharedItemsImports = 4
-		SafeApp.Tests\SafeApp.Tests.projitems*{baca2c16-2698-46ae-aa48-fc96d91f6211}*SharedItemsImports = 4
-		SafeApp.Tests\SafeApp.Tests.projitems*{e74dca2d-89ed-4f4a-be96-91bcde7ef758}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|iPhone = Ad-Hoc|iPhone
@@ -318,7 +311,6 @@ Global
 		{54021988-CA0A-4C25-A389-079C9C456402} = {4C986A9E-DCD2-4C20-AD68-D91FA50F5A48}
 		{BACA2C16-2698-46AE-AA48-FC96D91F6211} = {C4B0F1CA-FBBD-410B-BB9F-EB47696E3C61}
 		{9CF3C153-4898-4887-AA6B-BAE04B6461C3} = {C4B0F1CA-FBBD-410B-BB9F-EB47696E3C61}
-		{E74DCA2D-89ED-4F4A-BE96-91BCDE7EF758} = {C4B0F1CA-FBBD-410B-BB9F-EB47696E3C61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0C997FD-90BA-48E2-AC4D-60A84409C659}

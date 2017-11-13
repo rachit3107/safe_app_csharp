@@ -15,54 +15,53 @@ namespace SafeApp.AppBindings {
   public class AppBindings : IAppBindings {
     #region Generic FFiResult with value Callbacks
 
-    #if __IOS__
+#if __IOS__
           [MonoPInvokeCallback(typeof(UlongCb))]
-    #endif
+#endif
     private static void OnUlongCb(IntPtr self, FfiResult result, ulong value) {
       self.HandlePtrToType<UlongCb>()(IntPtr.Zero, result, value);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(StringCb))]
-    #endif
+#endif
     private static void OnStringCb(IntPtr self, FfiResult result, string value) {
       self.HandlePtrToType<StringCb>()(IntPtr.Zero, result, value);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(ResultCb))]
-    #endif
+#endif
     private static void OnResultCb(IntPtr self, FfiResult result) {
       self.HandlePtrToType<ResultCb>()(IntPtr.Zero, result);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(IntPtrCb))]
-    #endif
+#endif
     private static void OnIntPtrCb(IntPtr self, FfiResult result, IntPtr intPtr) {
       self.HandlePtrToType<IntPtrCb>()(IntPtr.Zero, result, intPtr);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(IntCb))]
-    #endif
+#endif
     private static void OnIntCb(IntPtr self, FfiResult result, int eventType) {
       self.HandlePtrToType<IntCb>()(IntPtr.Zero, result, eventType);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(ByteArrayCb))]
-    #endif
+#endif
     private static void OnByteArrayCb(IntPtr self, FfiResult result, IntPtr data, IntPtr dataLen) {
       var cb = self.HandlePtrToType<ByteArrayCb>();
       cb(IntPtr.Zero, result, data, dataLen);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(ListBasedResultCb))]
-    #endif
-    private static void OnListBasedResultCb(IntPtr self, FfiResult result)
-    {
+#endif
+    private static void OnListBasedResultCb(IntPtr self, FfiResult result) {
       var list = self.HandlePtrToType<List<object>>();
       var cb = (ListBasedResultCb)list[list.Count - 1];
       cb(IntPtr.Zero, result);
@@ -76,11 +75,11 @@ namespace SafeApp.AppBindings {
       AccessContainerGetContainerMDataInfoNative(appPtr, name, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "access_container_get_container_mdata_info")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "access_container_get_container_mdata_info")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "access_container_get_container_mdata_info")]
+#endif
     public static extern void AccessContainerGetContainerMDataInfoNative(IntPtr appPtr, string name, IntPtr self, UlongCb callback);
 
     #endregion
@@ -91,11 +90,11 @@ namespace SafeApp.AppBindings {
       AppExeFileStemNative(callback.ToHandlePtr(), OnStringCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_exe_file_stem")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_exe_file_stem")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_exe_file_stem")]
+#endif
     public static extern void AppExeFileStemNative(IntPtr self, StringCb callback);
 
     #endregion
@@ -106,11 +105,11 @@ namespace SafeApp.AppBindings {
       AppInitLoggingNative(fileName, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_init_logging")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_init_logging")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_init_logging")]
+#endif
     public static extern void AppInitLoggingNative(string fileName, IntPtr userDataPtr, ResultCb callback);
 
     #endregion
@@ -121,11 +120,11 @@ namespace SafeApp.AppBindings {
       AppOutputLogPathNative(fileName, callback.ToHandlePtr(), OnStringCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_output_log_path")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_output_log_path")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_output_log_path")]
+#endif
     public static extern void AppOutputLogPathNative(string fileName, IntPtr userDataPtr, StringCb callback);
 
     #endregion
@@ -136,11 +135,11 @@ namespace SafeApp.AppBindings {
       AppPubSignKeyNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_pub_sign_key")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_pub_sign_key")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_pub_sign_key")]
+#endif
     public static extern void AppPubSignKeyNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -150,11 +149,11 @@ namespace SafeApp.AppBindings {
     public void AppRegistered(string appId, IntPtr ffiAuthGrantedPtr, IntCb netObsCb, IntPtrCb appRegCb) {
       AppRegisteredNative(appId, ffiAuthGrantedPtr, netObsCb.ToHandlePtr(), appRegCb.ToHandlePtr(), OnIntCb, OnIntPtrCb);
     }
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_registered")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_registered")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_registered")]
+#endif
     public static extern void AppRegisteredNative(
       string appId,
       IntPtr ffiAuthGrantedPtr,
@@ -163,7 +162,7 @@ namespace SafeApp.AppBindings {
       IntCb netObsCb,
       IntPtrCb appRegCb);
 
-      #endregion
+    #endregion
 
     #region AppSetAdditionalSearchPath
 
@@ -171,11 +170,11 @@ namespace SafeApp.AppBindings {
       AppSetAdditionalSearchPathNative(path, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_set_additional_search_path")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_set_additional_search_path")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_set_additional_search_path")]
+#endif
     public static extern void AppSetAdditionalSearchPathNative(string path, IntPtr self, ResultCb callback);
 
     #endregion
@@ -186,11 +185,11 @@ namespace SafeApp.AppBindings {
       CipherOptFreeNative(appPtr, cipherOptHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "cipher_opt_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "cipher_opt_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "cipher_opt_free")]
+#endif
     public static extern void CipherOptFreeNative(IntPtr appPtr, ulong cipherOptHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -201,16 +200,16 @@ namespace SafeApp.AppBindings {
       CipherOptNewPlaintextNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "cipher_opt_new_plaintext")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "cipher_opt_new_plaintext")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "cipher_opt_new_plaintext")]
+#endif
     public static extern void CipherOptNewPlaintextNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
 
-#region DecodeIpcMessage
+    #region DecodeIpcMessage
 
     public void DecodeIpcMessage(
       string encodedReq,
@@ -232,11 +231,11 @@ namespace SafeApp.AppBindings {
         OnListBasedResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "decode_ipc_msg")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "decode_ipc_msg")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "decode_ipc_msg")]
+#endif
     public static extern void DecodeIpcMessageNative(
       string encodedReq,
       IntPtr self,
@@ -247,47 +246,45 @@ namespace SafeApp.AppBindings {
       DecodeRevokedCb revokedCb,
       ListBasedResultCb errorCb);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(DecodeAuthCb))]
-    #endif
-        private static void OnDecodeAuthCb(IntPtr self, uint reqId, IntPtr authGrantedFfiPtr) {
-          var cb = (DecodeAuthCb)self.HandlePtrToType<List<object>>()[0];
-          cb(IntPtr.Zero, reqId, authGrantedFfiPtr);
-        }
+#endif
+    private static void OnDecodeAuthCb(IntPtr self, uint reqId, IntPtr authGrantedFfiPtr) {
+      var cb = (DecodeAuthCb)self.HandlePtrToType<List<object>>()[0];
+      cb(IntPtr.Zero, reqId, authGrantedFfiPtr);
+    }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(DecodeUnregCb))]
-    #endif
+#endif
     private static void OnDecodeUnregCb(IntPtr self, uint reqId, IntPtr bsConfig, IntPtr bsSize) {
       var cb = (DecodeUnregCb)self.HandlePtrToType<List<object>>()[1];
       cb(IntPtr.Zero, reqId, bsConfig, bsSize);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(DecodeContCb))]
-    #endif
+#endif
     private static void OnDecodeContCb(IntPtr self, uint reqId) {
       var cb = (DecodeContCb)self.HandlePtrToType<List<object>>()[2];
       cb(IntPtr.Zero, reqId);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(DecodeShareMDataCb))]
-    #endif
+#endif
     private static void OnDecodeShareMDataCb(IntPtr self, uint reqId) {
       var cb = (DecodeShareMDataCb)self.HandlePtrToType<List<object>>()[3];
       cb(IntPtr.Zero, reqId);
     }
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(DecodeRevokedCb))]
-    #endif
+#endif
     private static void OnDecodeRevokedCb(IntPtr self) {
       var cb = (DecodeRevokedCb)self.HandlePtrToType<List<object>>()[4];
       cb(IntPtr.Zero);
     }
-
-
 
     #endregion
 
@@ -297,11 +294,11 @@ namespace SafeApp.AppBindings {
       DecryptSealedBoxNative(appPtr, data, len, pkHandle, skHandle, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "decrypt_sealed_box")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "decrypt_sealed_box")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "decrypt_sealed_box")]
+#endif
     public static extern void DecryptSealedBoxNative(
       IntPtr appPtr,
       IntPtr data,
@@ -319,16 +316,16 @@ namespace SafeApp.AppBindings {
       EncGenerateKeyPairNative(appPtr, callback.ToHandlePtr(), OnEncGenerateKeyPairCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_generate_key_pair")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_generate_key_pair")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_generate_key_pair")]
+#endif
     public static extern void EncGenerateKeyPairNative(IntPtr appPtr, IntPtr self, EncGenerateKeyPairCb callback);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(EncGenerateKeyPairCb))]
-    #endif
+#endif
     private static void OnEncGenerateKeyPairCb(IntPtr self, FfiResult result, ulong encPubKeyHandle, ulong encSecKeyHandle) {
       var cb = self.HandlePtrToType<EncGenerateKeyPairCb>();
       cb(IntPtr.Zero, result, encPubKeyHandle, encSecKeyHandle);
@@ -342,16 +339,16 @@ namespace SafeApp.AppBindings {
       EncodeAuthReqNative(authReq, callback.ToHandlePtr(), OnEncodeAuthReqCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "encode_auth_req")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "encode_auth_req")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "encode_auth_req")]
+#endif
     public static extern void EncodeAuthReqNative(IntPtr authReq, IntPtr userDataPtr, EncodeAuthReqCb callback);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(EncodeAuthReqCb))]
-    #endif
+#endif
     private static void OnEncodeAuthReqCb(IntPtr self, FfiResult result, uint requestId, string encodedReq) {
       var cb = self.HandlePtrToType<EncodeAuthReqCb>();
       cb(IntPtr.Zero, result, requestId, encodedReq);
@@ -365,11 +362,11 @@ namespace SafeApp.AppBindings {
       EncPubKeyFreeNative(appPtr, encryptPubKeyHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_pub_key_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_pub_key_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_pub_key_free")]
+#endif
     public static extern void EncPubKeyFreeNative(IntPtr appPtr, ulong encryptPubKeyHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -380,11 +377,11 @@ namespace SafeApp.AppBindings {
       EncPubKeyGetNative(appPtr, encryptPubKeyHandle, callback.ToHandlePtr(), OnIntPtrCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_pub_key_get")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_pub_key_get")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_pub_key_get")]
+#endif
     public static extern void EncPubKeyGetNative(IntPtr appPtr, ulong encryptPubKeyHandle, IntPtr self, IntPtrCb callback);
 
     #endregion
@@ -395,11 +392,11 @@ namespace SafeApp.AppBindings {
       EncPubKeyNewNative(appPtr, asymPublicKey, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_pub_key_new")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_pub_key_new")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_pub_key_new")]
+#endif
     public static extern void EncPubKeyNewNative(IntPtr appPtr, IntPtr asymPublicKey, IntPtr self, UlongCb callback);
 
     #endregion
@@ -410,11 +407,11 @@ namespace SafeApp.AppBindings {
       EncryptSealedBoxNative(appPtr, data, len, pkHandle, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "encrypt_sealed_box")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "encrypt_sealed_box")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "encrypt_sealed_box")]
+#endif
     public static extern void EncryptSealedBoxNative(
       IntPtr appPtr,
       IntPtr data,
@@ -431,11 +428,11 @@ namespace SafeApp.AppBindings {
       EncSecretKeyFreeNative(appPtr, encryptSecKeyHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_secret_key_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_secret_key_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_secret_key_free")]
+#endif
     public static extern void EncSecretKeyFreeNative(IntPtr appPtr, ulong encryptSecKeyHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -446,11 +443,11 @@ namespace SafeApp.AppBindings {
       EncSecretKeyGetNative(appPtr, encryptSecKeyHandle, callback.ToHandlePtr(), OnIntPtrCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_secret_key_get")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_secret_key_get")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_secret_key_get")]
+#endif
     public static extern void EncSecretKeyGetNative(IntPtr appPtr, ulong encryptSecKeyHandle, IntPtr self, IntPtrCb callback);
 
     #endregion
@@ -461,11 +458,11 @@ namespace SafeApp.AppBindings {
       EncSecretKeyNewNative(appPtr, asymSecretKey, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "enc_secret_key_new")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "enc_secret_key_new")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "enc_secret_key_new")]
+#endif
     public static extern void EncSecretKeyNewNative(IntPtr appPtr, IntPtr asymSecretKey, IntPtr self, UlongCb callback);
 
     #endregion
@@ -476,11 +473,11 @@ namespace SafeApp.AppBindings {
       FreeAppNative(appPtr);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "app_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "app_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "app_free")]
+#endif
     public static extern void FreeAppNative(IntPtr appPtr);
 
     #endregion
@@ -491,11 +488,11 @@ namespace SafeApp.AppBindings {
       IDataCloseSelfEncryptorNative(appPtr, seHandle, cipherOptHandle, callback.ToHandlePtr(), OnIntPtrCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_close_self_encryptor")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_close_self_encryptor")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_close_self_encryptor")]
+#endif
     public static extern void IDataCloseSelfEncryptorNative(
       IntPtr appPtr,
       ulong seHandle,
@@ -511,11 +508,11 @@ namespace SafeApp.AppBindings {
       IDataFetchSelfEncryptorNative(appPtr, xorNameArr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_fetch_self_encryptor")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_fetch_self_encryptor")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_fetch_self_encryptor")]
+#endif
     public static extern void IDataFetchSelfEncryptorNative(IntPtr appPtr, IntPtr xorNameArr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -526,11 +523,11 @@ namespace SafeApp.AppBindings {
       IDataNewSelfEncryptorNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_new_self_encryptor")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_new_self_encryptor")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_new_self_encryptor")]
+#endif
     public static extern void IDataNewSelfEncryptorNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -541,11 +538,11 @@ namespace SafeApp.AppBindings {
       IDataReadFromSelfEncryptorNative(appPtr, seHandle, fromPos, len, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_read_from_self_encryptor")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_read_from_self_encryptor")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_read_from_self_encryptor")]
+#endif
     public static extern void IDataReadFromSelfEncryptorNative(
       IntPtr appPtr,
       ulong seHandle,
@@ -562,11 +559,11 @@ namespace SafeApp.AppBindings {
       IDataSelfEncryptorReaderFreeNative(appPtr, sEReaderHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_self_encryptor_reader_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_self_encryptor_reader_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_self_encryptor_reader_free")]
+#endif
     public static extern void IDataSelfEncryptorReaderFreeNative(IntPtr appPtr, ulong sEReaderHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -577,11 +574,11 @@ namespace SafeApp.AppBindings {
       IDataSelfEncryptorWriterFreeNative(appPtr, sEWriterHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_self_encryptor_writer_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_self_encryptor_writer_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_self_encryptor_writer_free")]
+#endif
     public static extern void IDataSelfEncryptorWriterFreeNative(IntPtr appPtr, ulong sEWriterHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -592,11 +589,11 @@ namespace SafeApp.AppBindings {
       IDataSizeNative(appPtr, seHandle, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_size")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_size")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_size")]
+#endif
     public static extern void IDataSizeNative(IntPtr appPtr, ulong seHandle, IntPtr self, UlongCb callback);
 
     #endregion
@@ -607,11 +604,11 @@ namespace SafeApp.AppBindings {
       IDataWriteToSelfEncryptorNative(appPtr, seHandle, data, size, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "idata_write_to_self_encryptor")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "idata_write_to_self_encryptor")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "idata_write_to_self_encryptor")]
+#endif
     public static extern void IDataWriteToSelfEncryptorNative(
       IntPtr appPtr,
       ulong seHandle,
@@ -624,16 +621,20 @@ namespace SafeApp.AppBindings {
 
     #region MDataEntriesForEach
 
-    public void MDataEntriesForEach(IntPtr appPtr, ulong entriesHandle, MDataEntriesForEachCb forEachCallback, ListBasedResultCb resultCallback) {
+    public void MDataEntriesForEach(
+      IntPtr appPtr,
+      ulong entriesHandle,
+      MDataEntriesForEachCb forEachCallback,
+      ListBasedResultCb resultCallback) {
       var cbs = new List<object> {forEachCallback, resultCallback};
       MDataEntriesForEachNative(appPtr, entriesHandle, cbs.ToHandlePtr(), OnMDataEntriesForEachCb, OnListBasedResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entries_for_each")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entries_for_each")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entries_for_each")]
+#endif
     public static extern void MDataEntriesForEachNative(
       IntPtr appPtr,
       ulong entriesHandle,
@@ -641,9 +642,9 @@ namespace SafeApp.AppBindings {
       MDataEntriesForEachCb forEachCallback,
       ListBasedResultCb resultCallback);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(MDataEntriesForEachCb))]
-    #endif
+#endif
     private static void OnMDataEntriesForEachCb(
       IntPtr self,
       IntPtr entryKey,
@@ -663,11 +664,11 @@ namespace SafeApp.AppBindings {
       MDataEntriesFreeNative(appPtr, entriesHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entries_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entries_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entries_free")]
+#endif
     public static extern void MDataEntriesFreeNative(IntPtr appPtr, ulong entriesHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -685,11 +686,11 @@ namespace SafeApp.AppBindings {
       MDataEntriesInsertNative(appPtr, entriesHandle, keyPtr, keyLen, valuePtr, valueLen, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entries_insert")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entries_insert")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entries_insert")]
+#endif
     public static extern void MDataEntriesInsertNative(
       IntPtr appPtr,
       ulong entriesHandle,
@@ -708,16 +709,16 @@ namespace SafeApp.AppBindings {
       MDataEntriesLenNative(appPtr, entriesHandle, callback.ToHandlePtr(), OnMDataEntriesLenCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entries_len")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entries_len")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entries_len")]
+#endif
     public static extern void MDataEntriesLenNative(IntPtr appPtr, ulong entriesHandle, IntPtr self, MDataEntriesLenCb callback);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(MDataEntriesLenCb))]
-    #endif
+#endif
     private static void OnMDataEntriesLenCb(IntPtr self, ulong len) {
       var cb = self.HandlePtrToType<MDataEntriesLenCb>();
       cb(IntPtr.Zero, len);
@@ -731,11 +732,11 @@ namespace SafeApp.AppBindings {
       MDataEntriesNewNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entries_new")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entries_new")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entries_new")]
+#endif
     public static extern void MDataEntriesNewNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -746,11 +747,11 @@ namespace SafeApp.AppBindings {
       MDataEntryActionsFreeNative(appPtr, actionsHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entry_actions_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entry_actions_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entry_actions_free")]
+#endif
     public static extern void MDataEntryActionsFreeNative(IntPtr appPtr, ulong actionsHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -768,11 +769,11 @@ namespace SafeApp.AppBindings {
       MDataEntryActionsInsertNative(appPtr, actionsHandle, keyPtr, keyLen, valuePtr, valueLen, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_entry_actions_insert")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entry_actions_insert")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entry_actions_insert")]
+#endif
     public static extern void MDataEntryActionsInsertNative(
       IntPtr appPtr,
       ulong actionsHandle,
@@ -791,11 +792,11 @@ namespace SafeApp.AppBindings {
       MDataEntryActionsNewNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
     [DllImport("__Internal", EntryPoint = "mdata_entry_actions_new")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_entry_actions_new")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_entry_actions_new")]
+#endif
     public static extern void MDataEntryActionsNewNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -806,11 +807,11 @@ namespace SafeApp.AppBindings {
       MDataGetValueNative(appPtr, infoHandle, keyPtr, keyLen, callback.ToHandlePtr(), OnMDataGetValueCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_get_value")]
-    #elif __ANDROID__
+#elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_get_value")]
-    #endif
+#endif
     public static extern void MDataGetValueNative(
       IntPtr appPtr,
       ulong infoHandle,
@@ -819,9 +820,9 @@ namespace SafeApp.AppBindings {
       IntPtr self,
       MDataGetValueCb callback);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(MDataGetValueCb))]
-    #endif
+#endif
     private static void OnMDataGetValueCb(IntPtr self, FfiResult result, IntPtr data, IntPtr dataLen, ulong entryVersion) {
       var cb = self.HandlePtrToType<MDataGetValueCb>();
       cb(IntPtr.Zero, result, data, dataLen, entryVersion);
@@ -835,11 +836,11 @@ namespace SafeApp.AppBindings {
       MDataInfoDecryptNative(appPtr, mDataInfoH, cipherText, cipherLen, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_decrypt")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_decrypt")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_decrypt")]
+#endif
     public static extern void MDataInfoDecryptNative(
       IntPtr appPtr,
       ulong mDataInfoH,
@@ -856,11 +857,11 @@ namespace SafeApp.AppBindings {
       MDataInfoDeserialiseNative(appPtr, ptr, len, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_deserialise")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_deserialise")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_deserialise")]
+#endif
     public static extern void MDataInfoDeserialiseNative(IntPtr appPtr, IntPtr ptr, IntPtr len, IntPtr self, UlongCb callback);
 
     #endregion
@@ -871,11 +872,11 @@ namespace SafeApp.AppBindings {
       MDataInfoEncryptEntryKeyNative(appPtr, infoH, inputPtr, inputLen, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_encrypt_entry_key")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_encrypt_entry_key")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_encrypt_entry_key")]
+#endif
     public static extern void MDataInfoEncryptEntryKeyNative(
       IntPtr appPtr,
       ulong infoH,
@@ -892,11 +893,11 @@ namespace SafeApp.AppBindings {
       MDataInfoEncryptEntryValueNative(appPtr, infoH, inputPtr, inputLen, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_encrypt_entry_value")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_encrypt_entry_value")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_encrypt_entry_value")]
+#endif
     public static extern void MDataInfoEncryptEntryValueNative(
       IntPtr appPtr,
       ulong infoH,
@@ -913,11 +914,11 @@ namespace SafeApp.AppBindings {
       MDataInfoFreeNative(appPtr, infoHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_free")]
+#endif
     public static extern void MDataInfoFreeNative(IntPtr appPtr, ulong infoHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -928,11 +929,11 @@ namespace SafeApp.AppBindings {
       MDataInfoNewPublicNative(appPtr, xorNameArr, typeTag, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_new_public")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_new_public")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_new_public")]
+#endif
     public static extern void MDataInfoNewPublicNative(IntPtr appPtr, IntPtr xorNameArr, ulong typeTag, IntPtr self, UlongCb callback);
 
     #endregion
@@ -943,11 +944,11 @@ namespace SafeApp.AppBindings {
       MDataInfoRandomPrivateNative(appPtr, typeTag, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_random_private")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_random_private")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_random_private")]
+#endif
     public static extern void MDataInfoRandomPrivateNative(IntPtr appPtr, ulong typeTag, IntPtr self, UlongCb callback);
 
     #endregion
@@ -958,11 +959,11 @@ namespace SafeApp.AppBindings {
       MDataInfoRandomPublicNative(appPtr, typeTag, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_random_public")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_random_public")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_random_public")]
+#endif
     public static extern void MDataInfoRandomPublicNative(IntPtr appPtr, ulong typeTag, IntPtr self, UlongCb callback);
 
     #endregion
@@ -973,11 +974,11 @@ namespace SafeApp.AppBindings {
       MDataInfoSerialiseNative(appPtr, infoHandle, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_info_serialise")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_info_serialise")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_info_serialise")]
+#endif
     public static extern void MDataInfoSerialiseNative(IntPtr appPtr, ulong infoHandle, IntPtr self, ByteArrayCb callback);
 
     #endregion
@@ -991,11 +992,11 @@ namespace SafeApp.AppBindings {
       MDataKeysForEachNative(appPtr, keysHandle, a, OnMDataKeysForEachCb, OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_keys_for_each")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_keys_for_each")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_keys_for_each")]
+#endif
     public static extern void MDataKeysForEachNative(
       IntPtr appPtr,
       ulong keysHandle,
@@ -1003,9 +1004,9 @@ namespace SafeApp.AppBindings {
       MDataKeysForEachCb forEachCb,
       ResultCb resCb);
 
-    #if __IOS__
+#if __IOS__
         [MonoPInvokeCallback(typeof(MDataKeysForEachCb))]
-    #endif
+#endif
     private static void OnMDataKeysForEachCb(IntPtr self, IntPtr bytePtr, IntPtr byteLen) {
       var cb = (MDataKeysForEachCb)self.HandlePtrToType<List<object>>(false)[0];
       cb(IntPtr.Zero, bytePtr, byteLen);
@@ -1019,11 +1020,11 @@ namespace SafeApp.AppBindings {
       MDataKeysFreeNative(appPtr, keysHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_keys_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_keys_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_keys_free")]
+#endif
     public static extern void MDataKeysFreeNative(IntPtr appPtr, ulong keysHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -1034,11 +1035,11 @@ namespace SafeApp.AppBindings {
       MDataKeysLenNative(appPtr, keysHandle, callback.ToHandlePtr(), OnIntPtrCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_keys_len")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_keys_len")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_keys_len")]
+#endif
     public static extern void MDataKeysLenNative(IntPtr appPtr, ulong keysHandle, IntPtr self, IntPtrCb callback);
 
     #endregion
@@ -1049,11 +1050,11 @@ namespace SafeApp.AppBindings {
       MDataListEntriesNative(appPtr, infoHandle, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_list_entries")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_list_entries")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_list_entries")]
+#endif
     public static extern void MDataListEntriesNative(IntPtr appPtr, ulong infoHandle, IntPtr self, UlongCb callback);
 
     #endregion
@@ -1064,11 +1065,11 @@ namespace SafeApp.AppBindings {
       MDataListKeysNative(appPtr, infoHandle, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_list_keys")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_list_keys")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_list_keys")]
+#endif
     public static extern void MDataListKeysNative(IntPtr appPtr, ulong infoHandle, IntPtr self, UlongCb callback);
 
     #endregion
@@ -1079,11 +1080,11 @@ namespace SafeApp.AppBindings {
       MDataMutateEntriesNative(appPtr, infoHandle, actionsHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_mutate_entries")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_mutate_entries")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_mutate_entries")]
+#endif
     public static extern void MDataMutateEntriesNative(
       IntPtr appPtr,
       ulong infoHandle,
@@ -1099,11 +1100,11 @@ namespace SafeApp.AppBindings {
       MDataPermissionSetAllowNative(appPtr, setHandle, action, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_permission_set_allow")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_permission_set_allow")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_permission_set_allow")]
+#endif
     public static extern void MDataPermissionSetAllowNative(
       IntPtr appPtr,
       ulong setHandle,
@@ -1119,11 +1120,11 @@ namespace SafeApp.AppBindings {
       MDataPermissionSetFreeNative(appPtr, setHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_permission_set_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_permission_set_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_permission_set_free")]
+#endif
     public static extern void MDataPermissionSetFreeNative(IntPtr appPtr, ulong setHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -1134,11 +1135,11 @@ namespace SafeApp.AppBindings {
       MDataPermissionSetNewNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_permission_set_new")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_permission_set_new")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_permission_set_new")]
+#endif
     public static extern void MDataPermissionSetNewNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -1149,11 +1150,11 @@ namespace SafeApp.AppBindings {
       MDataPermissionsFreeNative(appPtr, permissionsHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_permissions_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_permissions_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_permissions_free")]
+#endif
     public static extern void MDataPermissionsFreeNative(IntPtr appPtr, ulong permissionsHandle, IntPtr self, ResultCb callback);
 
     #endregion
@@ -1169,11 +1170,11 @@ namespace SafeApp.AppBindings {
       MDataPermissionsInsertNative(appPtr, permissionsHandle, userHandle, permissionSetHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_permissions_insert")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_permissions_insert")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_permissions_insert")]
+#endif
     public static extern void MDataPermissionsInsertNative(
       IntPtr appPtr,
       ulong permissionsHandle,
@@ -1190,11 +1191,11 @@ namespace SafeApp.AppBindings {
       MDataPermissionsNewNative(appPtr, callback.ToHandlePtr(), OnUlongCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_permissions_new")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_permissions_new")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_permissions_new")]
+#endif
     public static extern void MDataPermissionsNewNative(IntPtr appPtr, IntPtr self, UlongCb callback);
 
     #endregion
@@ -1205,11 +1206,11 @@ namespace SafeApp.AppBindings {
       MDataPutNative(appPtr, infoHandle, permissionsHandle, entriesHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "mdata_put")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "mdata_put")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "mdata_put")]
+#endif
     public static extern void MDataPutNative(
       IntPtr appPtr,
       ulong infoHandle,
@@ -1226,11 +1227,11 @@ namespace SafeApp.AppBindings {
       Sha3HashNative(data, len, callback.ToHandlePtr(), OnByteArrayCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "sha3_hash")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "sha3_hash")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "sha3_hash")]
+#endif
     public static extern void Sha3HashNative(IntPtr data, IntPtr len, IntPtr self, ByteArrayCb callback);
 
     #endregion
@@ -1241,14 +1242,15 @@ namespace SafeApp.AppBindings {
       SignKeyFreeNative(appPtr, signKeyHandle, callback.ToHandlePtr(), OnResultCb);
     }
 
-    #if __IOS__
+#if __IOS__
         [DllImport("__Internal", EntryPoint = "sign_key_free")]
-    #elif __ANDROID__
-        [DllImport("safe_app", EntryPoint = "sign_key_free")]
-    #endif
+#elif __ANDROID__
+    [DllImport("safe_app", EntryPoint = "sign_key_free")]
+#endif
     public static extern void SignKeyFreeNative(IntPtr appPtr, ulong signKeyHandle, IntPtr self, ResultCb callback);
   }
-  #endregion  
+
+  #endregion
 }
 
 #endif

@@ -105,14 +105,14 @@ namespace SafeApp {
         () => {
           var tcs = new TaskCompletionSource<string>();
           if (authReq.Containers == null) {
-            tcs.SetException(new ArgumentNullException($"{nameof(authReq.Containers)} OperationCanceledException not be null"));
+            tcs.SetException(new ArgumentNullException($"{nameof(authReq.Containers)} cannot be null"));
             return tcs.Task;
           }
           if (string.IsNullOrEmpty(authReq.AppExchangeInfo.Name) || string.IsNullOrEmpty(authReq.AppExchangeInfo.Id) ||
               string.IsNullOrEmpty(authReq.AppExchangeInfo.Vendor)) {
             tcs.SetException(
               new ArgumentException(
-                $"{nameof(authReq.AppExchangeInfo.Name)}, {nameof(authReq.AppExchangeInfo.Id)}, {nameof(authReq.AppExchangeInfo.Vendor)} Fields are mandatory for AppExchageInfo"));
+                $"{nameof(authReq.AppExchangeInfo.Name)}, {nameof(authReq.AppExchangeInfo.Id)}, {nameof(authReq.AppExchangeInfo.Vendor)} fields are mandatory for AppExchageInfo"));
             return tcs.Task;
           }
           var authReqFfi = new AuthReqFfi {
