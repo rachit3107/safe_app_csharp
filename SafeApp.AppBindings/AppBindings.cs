@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SafeApp.Utilities;
-
 #if __IOS__
 using ObjCRuntime;
 
@@ -16,42 +15,42 @@ namespace SafeApp.AppBindings {
     #region Generic FFiResult with value Callbacks
 
 #if __IOS__
-          [MonoPInvokeCallback(typeof(UlongCb))]
+    [MonoPInvokeCallback(typeof(UlongCb))]
 #endif
     private static void OnUlongCb(IntPtr self, FfiResult result, ulong value) {
       self.HandlePtrToType<UlongCb>()(IntPtr.Zero, result, value);
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(StringCb))]
+    [MonoPInvokeCallback(typeof(StringCb))]
 #endif
     private static void OnStringCb(IntPtr self, FfiResult result, string value) {
       self.HandlePtrToType<StringCb>()(IntPtr.Zero, result, value);
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(ResultCb))]
+    [MonoPInvokeCallback(typeof(ResultCb))]
 #endif
     private static void OnResultCb(IntPtr self, FfiResult result) {
       self.HandlePtrToType<ResultCb>()(IntPtr.Zero, result);
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(IntPtrCb))]
+    [MonoPInvokeCallback(typeof(IntPtrCb))]
 #endif
     private static void OnIntPtrCb(IntPtr self, FfiResult result, IntPtr intPtr) {
       self.HandlePtrToType<IntPtrCb>()(IntPtr.Zero, result, intPtr);
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(IntCb))]
+    [MonoPInvokeCallback(typeof(IntCb))]
 #endif
     private static void OnIntCb(IntPtr self, FfiResult result, int eventType) {
       self.HandlePtrToType<IntCb>()(IntPtr.Zero, result, eventType);
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(ByteArrayCb))]
+    [MonoPInvokeCallback(typeof(ByteArrayCb))]
 #endif
     private static void OnByteArrayCb(IntPtr self, FfiResult result, IntPtr data, IntPtr dataLen) {
       var cb = self.HandlePtrToType<ByteArrayCb>();
@@ -59,7 +58,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(ListBasedResultCb))]
+    [MonoPInvokeCallback(typeof(ListBasedResultCb))]
 #endif
     private static void OnListBasedResultCb(IntPtr self, FfiResult result) {
       var list = self.HandlePtrToType<List<object>>();
@@ -76,7 +75,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "access_container_get_container_mdata_info")]
+    [DllImport("__Internal", EntryPoint = "access_container_get_container_mdata_info")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "access_container_get_container_mdata_info")]
 #endif
@@ -91,7 +90,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_exe_file_stem")]
+    [DllImport("__Internal", EntryPoint = "app_exe_file_stem")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_exe_file_stem")]
 #endif
@@ -106,7 +105,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_init_logging")]
+    [DllImport("__Internal", EntryPoint = "app_init_logging")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_init_logging")]
 #endif
@@ -121,7 +120,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_output_log_path")]
+    [DllImport("__Internal", EntryPoint = "app_output_log_path")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_output_log_path")]
 #endif
@@ -136,7 +135,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_pub_sign_key")]
+    [DllImport("__Internal", EntryPoint = "app_pub_sign_key")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_pub_sign_key")]
 #endif
@@ -150,7 +149,7 @@ namespace SafeApp.AppBindings {
       AppRegisteredNative(appId, ffiAuthGrantedPtr, netObsCb.ToHandlePtr(), appRegCb.ToHandlePtr(), OnIntCb, OnIntPtrCb);
     }
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_registered")]
+    [DllImport("__Internal", EntryPoint = "app_registered")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_registered")]
 #endif
@@ -171,7 +170,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_set_additional_search_path")]
+    [DllImport("__Internal", EntryPoint = "app_set_additional_search_path")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_set_additional_search_path")]
 #endif
@@ -186,7 +185,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "cipher_opt_free")]
+    [DllImport("__Internal", EntryPoint = "cipher_opt_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "cipher_opt_free")]
 #endif
@@ -201,7 +200,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "cipher_opt_new_plaintext")]
+    [DllImport("__Internal", EntryPoint = "cipher_opt_new_plaintext")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "cipher_opt_new_plaintext")]
 #endif
@@ -232,7 +231,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "decode_ipc_msg")]
+    [DllImport("__Internal", EntryPoint = "decode_ipc_msg")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "decode_ipc_msg")]
 #endif
@@ -247,7 +246,7 @@ namespace SafeApp.AppBindings {
       ListBasedResultCb errorCb);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(DecodeAuthCb))]
+    [MonoPInvokeCallback(typeof(DecodeAuthCb))]
 #endif
     private static void OnDecodeAuthCb(IntPtr self, uint reqId, IntPtr authGrantedFfiPtr) {
       var cb = (DecodeAuthCb)self.HandlePtrToType<List<object>>()[0];
@@ -255,7 +254,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(DecodeUnregCb))]
+    [MonoPInvokeCallback(typeof(DecodeUnregCb))]
 #endif
     private static void OnDecodeUnregCb(IntPtr self, uint reqId, IntPtr bsConfig, IntPtr bsSize) {
       var cb = (DecodeUnregCb)self.HandlePtrToType<List<object>>()[1];
@@ -263,7 +262,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(DecodeContCb))]
+    [MonoPInvokeCallback(typeof(DecodeContCb))]
 #endif
     private static void OnDecodeContCb(IntPtr self, uint reqId) {
       var cb = (DecodeContCb)self.HandlePtrToType<List<object>>()[2];
@@ -271,7 +270,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(DecodeShareMDataCb))]
+    [MonoPInvokeCallback(typeof(DecodeShareMDataCb))]
 #endif
     private static void OnDecodeShareMDataCb(IntPtr self, uint reqId) {
       var cb = (DecodeShareMDataCb)self.HandlePtrToType<List<object>>()[3];
@@ -279,7 +278,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(DecodeRevokedCb))]
+    [MonoPInvokeCallback(typeof(DecodeRevokedCb))]
 #endif
     private static void OnDecodeRevokedCb(IntPtr self) {
       var cb = (DecodeRevokedCb)self.HandlePtrToType<List<object>>()[4];
@@ -295,7 +294,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "decrypt_sealed_box")]
+    [DllImport("__Internal", EntryPoint = "decrypt_sealed_box")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "decrypt_sealed_box")]
 #endif
@@ -317,14 +316,14 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_generate_key_pair")]
+    [DllImport("__Internal", EntryPoint = "enc_generate_key_pair")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_generate_key_pair")]
 #endif
     public static extern void EncGenerateKeyPairNative(IntPtr appPtr, IntPtr self, EncGenerateKeyPairCb callback);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(EncGenerateKeyPairCb))]
+    [MonoPInvokeCallback(typeof(EncGenerateKeyPairCb))]
 #endif
     private static void OnEncGenerateKeyPairCb(IntPtr self, FfiResult result, ulong encPubKeyHandle, ulong encSecKeyHandle) {
       var cb = self.HandlePtrToType<EncGenerateKeyPairCb>();
@@ -340,14 +339,14 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "encode_auth_req")]
+    [DllImport("__Internal", EntryPoint = "encode_auth_req")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "encode_auth_req")]
 #endif
     public static extern void EncodeAuthReqNative(IntPtr authReq, IntPtr userDataPtr, EncodeAuthReqCb callback);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(EncodeAuthReqCb))]
+    [MonoPInvokeCallback(typeof(EncodeAuthReqCb))]
 #endif
     private static void OnEncodeAuthReqCb(IntPtr self, FfiResult result, uint requestId, string encodedReq) {
       var cb = self.HandlePtrToType<EncodeAuthReqCb>();
@@ -363,7 +362,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_pub_key_free")]
+    [DllImport("__Internal", EntryPoint = "enc_pub_key_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_pub_key_free")]
 #endif
@@ -378,7 +377,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_pub_key_get")]
+    [DllImport("__Internal", EntryPoint = "enc_pub_key_get")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_pub_key_get")]
 #endif
@@ -393,7 +392,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_pub_key_new")]
+    [DllImport("__Internal", EntryPoint = "enc_pub_key_new")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_pub_key_new")]
 #endif
@@ -408,7 +407,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "encrypt_sealed_box")]
+    [DllImport("__Internal", EntryPoint = "encrypt_sealed_box")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "encrypt_sealed_box")]
 #endif
@@ -429,7 +428,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_secret_key_free")]
+    [DllImport("__Internal", EntryPoint = "enc_secret_key_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_secret_key_free")]
 #endif
@@ -444,7 +443,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_secret_key_get")]
+    [DllImport("__Internal", EntryPoint = "enc_secret_key_get")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_secret_key_get")]
 #endif
@@ -459,7 +458,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "enc_secret_key_new")]
+    [DllImport("__Internal", EntryPoint = "enc_secret_key_new")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "enc_secret_key_new")]
 #endif
@@ -474,7 +473,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "app_free")]
+    [DllImport("__Internal", EntryPoint = "app_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "app_free")]
 #endif
@@ -489,7 +488,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_close_self_encryptor")]
+    [DllImport("__Internal", EntryPoint = "idata_close_self_encryptor")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_close_self_encryptor")]
 #endif
@@ -509,7 +508,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_fetch_self_encryptor")]
+    [DllImport("__Internal", EntryPoint = "idata_fetch_self_encryptor")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_fetch_self_encryptor")]
 #endif
@@ -524,7 +523,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_new_self_encryptor")]
+    [DllImport("__Internal", EntryPoint = "idata_new_self_encryptor")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_new_self_encryptor")]
 #endif
@@ -539,7 +538,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_read_from_self_encryptor")]
+    [DllImport("__Internal", EntryPoint = "idata_read_from_self_encryptor")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_read_from_self_encryptor")]
 #endif
@@ -560,7 +559,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_self_encryptor_reader_free")]
+    [DllImport("__Internal", EntryPoint = "idata_self_encryptor_reader_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_self_encryptor_reader_free")]
 #endif
@@ -575,7 +574,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_self_encryptor_writer_free")]
+    [DllImport("__Internal", EntryPoint = "idata_self_encryptor_writer_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_self_encryptor_writer_free")]
 #endif
@@ -590,7 +589,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_size")]
+    [DllImport("__Internal", EntryPoint = "idata_size")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_size")]
 #endif
@@ -605,7 +604,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "idata_write_to_self_encryptor")]
+    [DllImport("__Internal", EntryPoint = "idata_write_to_self_encryptor")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "idata_write_to_self_encryptor")]
 #endif
@@ -631,7 +630,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entries_for_each")]
+    [DllImport("__Internal", EntryPoint = "mdata_entries_for_each")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entries_for_each")]
 #endif
@@ -643,7 +642,7 @@ namespace SafeApp.AppBindings {
       ListBasedResultCb resultCallback);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(MDataEntriesForEachCb))]
+    [MonoPInvokeCallback(typeof(MDataEntriesForEachCb))]
 #endif
     private static void OnMDataEntriesForEachCb(
       IntPtr self,
@@ -665,7 +664,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entries_free")]
+    [DllImport("__Internal", EntryPoint = "mdata_entries_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entries_free")]
 #endif
@@ -687,7 +686,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entries_insert")]
+    [DllImport("__Internal", EntryPoint = "mdata_entries_insert")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entries_insert")]
 #endif
@@ -710,14 +709,14 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entries_len")]
+    [DllImport("__Internal", EntryPoint = "mdata_entries_len")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entries_len")]
 #endif
     public static extern void MDataEntriesLenNative(IntPtr appPtr, ulong entriesHandle, IntPtr self, MDataEntriesLenCb callback);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(MDataEntriesLenCb))]
+    [MonoPInvokeCallback(typeof(MDataEntriesLenCb))]
 #endif
     private static void OnMDataEntriesLenCb(IntPtr self, ulong len) {
       var cb = self.HandlePtrToType<MDataEntriesLenCb>();
@@ -733,7 +732,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entries_new")]
+    [DllImport("__Internal", EntryPoint = "mdata_entries_new")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entries_new")]
 #endif
@@ -748,7 +747,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entry_actions_free")]
+    [DllImport("__Internal", EntryPoint = "mdata_entry_actions_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entry_actions_free")]
 #endif
@@ -770,7 +769,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_entry_actions_insert")]
+    [DllImport("__Internal", EntryPoint = "mdata_entry_actions_insert")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_entry_actions_insert")]
 #endif
@@ -808,7 +807,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_get_value")]
+    [DllImport("__Internal", EntryPoint = "mdata_get_value")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_get_value")]
 #endif
@@ -821,7 +820,7 @@ namespace SafeApp.AppBindings {
       MDataGetValueCb callback);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(MDataGetValueCb))]
+    [MonoPInvokeCallback(typeof(MDataGetValueCb))]
 #endif
     private static void OnMDataGetValueCb(IntPtr self, FfiResult result, IntPtr data, IntPtr dataLen, ulong entryVersion) {
       var cb = self.HandlePtrToType<MDataGetValueCb>();
@@ -837,7 +836,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_decrypt")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_decrypt")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_decrypt")]
 #endif
@@ -858,7 +857,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_deserialise")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_deserialise")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_deserialise")]
 #endif
@@ -873,7 +872,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_encrypt_entry_key")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_encrypt_entry_key")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_encrypt_entry_key")]
 #endif
@@ -894,7 +893,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_encrypt_entry_value")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_encrypt_entry_value")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_encrypt_entry_value")]
 #endif
@@ -915,7 +914,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_free")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_free")]
 #endif
@@ -930,7 +929,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_new_public")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_new_public")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_new_public")]
 #endif
@@ -945,7 +944,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_random_private")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_random_private")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_random_private")]
 #endif
@@ -960,7 +959,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_random_public")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_random_public")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_random_public")]
 #endif
@@ -975,7 +974,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_info_serialise")]
+    [DllImport("__Internal", EntryPoint = "mdata_info_serialise")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_info_serialise")]
 #endif
@@ -993,7 +992,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_keys_for_each")]
+    [DllImport("__Internal", EntryPoint = "mdata_keys_for_each")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_keys_for_each")]
 #endif
@@ -1005,7 +1004,7 @@ namespace SafeApp.AppBindings {
       ResultCb resCb);
 
 #if __IOS__
-        [MonoPInvokeCallback(typeof(MDataKeysForEachCb))]
+    [MonoPInvokeCallback(typeof(MDataKeysForEachCb))]
 #endif
     private static void OnMDataKeysForEachCb(IntPtr self, IntPtr bytePtr, IntPtr byteLen) {
       var cb = (MDataKeysForEachCb)self.HandlePtrToType<List<object>>(false)[0];
@@ -1021,7 +1020,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_keys_free")]
+    [DllImport("__Internal", EntryPoint = "mdata_keys_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_keys_free")]
 #endif
@@ -1036,7 +1035,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_keys_len")]
+    [DllImport("__Internal", EntryPoint = "mdata_keys_len")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_keys_len")]
 #endif
@@ -1051,7 +1050,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_list_entries")]
+    [DllImport("__Internal", EntryPoint = "mdata_list_entries")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_list_entries")]
 #endif
@@ -1066,7 +1065,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_list_keys")]
+    [DllImport("__Internal", EntryPoint = "mdata_list_keys")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_list_keys")]
 #endif
@@ -1081,7 +1080,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_mutate_entries")]
+    [DllImport("__Internal", EntryPoint = "mdata_mutate_entries")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_mutate_entries")]
 #endif
@@ -1101,7 +1100,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_permission_set_allow")]
+    [DllImport("__Internal", EntryPoint = "mdata_permission_set_allow")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_permission_set_allow")]
 #endif
@@ -1121,7 +1120,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_permission_set_free")]
+    [DllImport("__Internal", EntryPoint = "mdata_permission_set_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_permission_set_free")]
 #endif
@@ -1136,7 +1135,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_permission_set_new")]
+    [DllImport("__Internal", EntryPoint = "mdata_permission_set_new")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_permission_set_new")]
 #endif
@@ -1151,7 +1150,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_permissions_free")]
+    [DllImport("__Internal", EntryPoint = "mdata_permissions_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_permissions_free")]
 #endif
@@ -1171,7 +1170,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_permissions_insert")]
+    [DllImport("__Internal", EntryPoint = "mdata_permissions_insert")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_permissions_insert")]
 #endif
@@ -1192,7 +1191,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_permissions_new")]
+    [DllImport("__Internal", EntryPoint = "mdata_permissions_new")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_permissions_new")]
 #endif
@@ -1207,7 +1206,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "mdata_put")]
+    [DllImport("__Internal", EntryPoint = "mdata_put")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_put")]
 #endif
@@ -1228,7 +1227,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "sha3_hash")]
+    [DllImport("__Internal", EntryPoint = "sha3_hash")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "sha3_hash")]
 #endif
@@ -1243,7 +1242,7 @@ namespace SafeApp.AppBindings {
     }
 
 #if __IOS__
-        [DllImport("__Internal", EntryPoint = "sign_key_free")]
+    [DllImport("__Internal", EntryPoint = "sign_key_free")]
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "sign_key_free")]
 #endif
