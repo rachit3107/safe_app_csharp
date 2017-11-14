@@ -21,6 +21,7 @@
       <Kind>Static</Kind>
       <ForceLoad>True</ForceLoad>
       <LinkerFlags>-lresolv</LinkerFlags>
+      <Frameworks>Security</Frameworks>
     </NativeReference>
   </ItemGroup>
 </Project>

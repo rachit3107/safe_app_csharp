@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SafeApp.Utilities;
+
 #if __IOS__
 using ObjCRuntime;
 
