@@ -27,8 +27,8 @@ use std::path::Path;
 use std::process;
 use zip::ZipArchive;
 
-const ARCHIVE_NAME: &'static str = "alpha-2.zip";
-const BASE_URL: &'static str = "https://s3.eu-west-2.amazonaws.com/safe-app-csharp/";
+const ARCHIVE_NAME: &'static str = "8aa35d4-safe_app.zip";
+const BASE_URL: &'static str = "https://s3.eu-west-2.amazonaws.com/safe-mobile/";
 const ANDROID_DIR_NAME: &'static str = "SafeApp.AppBindings.Android";
 const IOS_DIR_NAME: &'static str = "SafeApp.AppBindings.iOS";
 

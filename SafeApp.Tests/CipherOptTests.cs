@@ -4,6 +4,7 @@ using SafeApp.Misc;
 namespace SafeApp.Tests {
   [TestFixture]
   internal class CipherOptTests {
+    /*
     [Test]
     public async void CreatePlainCipherOpt() {
       Utils.InitialiseSessionForRandomTestApp();
@@ -29,6 +30,6 @@ namespace SafeApp.Tests {
       using (var handle = await CipherOpt.NewSymmetricAsync()) {
         Assert.NotNull(handle);
       }
-    }
+    }*/
   }
 }

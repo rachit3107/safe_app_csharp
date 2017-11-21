@@ -13,7 +13,7 @@ namespace SafeApp.Tests {
     private AppExchangeInfo GetExchangeInfo() {
       return new AppExchangeInfo {Id = "net.maidsafe.example", Name = "Test App", Vendor = "Maidsafe Ltd."};
     }
-
+    /*
     [Test]
     public async void ConnectAsRegisteredApp() {
       var result = await Session.DecodeIpcMessageAsync(AuthUri);
@@ -27,7 +27,7 @@ namespace SafeApp.Tests {
     public async void DecodeAuthRequest() {
       var result = await Session.DecodeIpcMessageAsync(AuthUri);
       Assert.NotNull(result.AuthGranted);
-    }
+    }*/
 
     [Test]
     public void EncodeAuthRequestWithContainersAsNull() {

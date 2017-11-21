@@ -12,7 +12,7 @@ using SafeApp.Utilities;
 namespace SafeApp.IData {
   public static class IData {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task<List<byte>> CloseSelfEncryptorAsync(ulong seH, NativeHandle cipherOptH) {
       var tcs = new TaskCompletionSource<List<byte>>();
       IntPtrCb callback = (_, result, xorNamePtr) => {
@@ -144,6 +144,6 @@ namespace SafeApp.IData {
       Marshal.FreeHGlobal(dataPtr);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

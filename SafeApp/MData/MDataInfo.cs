@@ -8,9 +8,9 @@ using SafeApp.Utilities;
 // ReSharper disable ConvertToLocalFunction
 
 namespace SafeApp.MData {
-  public static class MDataInfo {
+  public static class Info {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task<List<byte>> DecryptAsync(NativeHandle mDataInfoH, List<byte> cipherText) {
       var tcs = new TaskCompletionSource<List<byte>>();
       var cipherPtr = cipherText.ToIntPtr();
@@ -171,6 +171,6 @@ namespace SafeApp.MData {
       AppBindings.MDataInfoSerialise(Session.AppPtr, mdataInfoH, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

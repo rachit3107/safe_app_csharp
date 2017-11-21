@@ -10,7 +10,7 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MData {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task<(List<byte>, ulong)> GetValueAsync(NativeHandle infoHandle, List<byte> key) {
       var tcs = new TaskCompletionSource<(List<byte>, ulong)>();
       var keyPtr = key.ToIntPtr();
@@ -92,6 +92,6 @@ namespace SafeApp.MData {
       AppBindings.MDataPut(Session.AppPtr, mDataInfoH, permissionsH, entriesH, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

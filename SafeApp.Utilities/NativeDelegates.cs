@@ -1,7 +1,11 @@
 ﻿using System;
 
 namespace SafeApp.Utilities {
-  public delegate void ResultCb(IntPtr self, FfiResult result);
+  public delegate void ResultCb(IntPtr self, IntPtr result);
+
+  public delegate void DisconnectedCb(IntPtr self);
+
+  public delegate void AppRegCb(IntPtr self, IntPtr result, IntPtr value);
 
   public delegate void ListBasedResultCb(IntPtr self, FfiResult result);
 
@@ -15,7 +19,7 @@ namespace SafeApp.Utilities {
 
   public delegate void UlongCb(IntPtr self, FfiResult result, ulong handle);
 
-  public delegate void EncodeAuthReqCb(IntPtr self, FfiResult result, uint requestId, string encodedReq);
+  public delegate void EncodeAuthReqCb(IntPtr self, IntPtr result, uint requestId, string encodedReq);
 
   public delegate void EncGenerateKeyPairCb(IntPtr self, FfiResult result, ulong encPubKeyHandle, ulong encSecKeyHandle);
   public delegate void MDataEntriesForEachCb(
@@ -25,6 +29,8 @@ namespace SafeApp.Utilities {
     IntPtr entryVal,
     IntPtr entryValLen,
     ulong entryVersion);
+
+  public delegate void MDataInfoCb(IntPtr self, IntPtr result, IntPtr mdataInfo);
 
   public delegate void MDataKeysForEachCb(IntPtr self, IntPtr bytePtr, IntPtr byteLen);
 
@@ -41,4 +47,6 @@ namespace SafeApp.Utilities {
   public delegate void DecodeShareMDataCb(IntPtr self, uint reqId);
 
   public delegate void DecodeRevokedCb(IntPtr self);
+
+  public delegate void DecodeErrorCb(IntPtr self, IntPtr result, uint reqId);
 }

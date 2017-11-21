@@ -32,8 +32,8 @@ namespace SafeApp.AppBindings {
 #if __IOS__
     [MonoPInvokeCallback(typeof(ResultCb))]
 #endif
-    private static void OnResultCb(IntPtr self, FfiResult result) {
-      self.HandlePtrToType<ResultCb>()(IntPtr.Zero, result);
+    private static void OnResultCb(IntPtr self, IntPtr result) {
+      self.HandlePtrToType<Action<FfiResult>>()(Marshal.PtrToStructure<FfiResult>(result));
     }
 
 #if __IOS__
@@ -71,8 +71,8 @@ namespace SafeApp.AppBindings {
 
     #region AccessContainerGetContainerMDataInfo
 
-    public void AccessContainerGetContainerMDataInfo(IntPtr appPtr, string name, UlongCb callback) {
-      AccessContainerGetContainerMDataInfoNative(appPtr, name, callback.ToHandlePtr(), OnUlongCb);
+    public void AccessContainerGetContainerMDataInfo(IntPtr appPtr, string name, Action<FfiResult, MDataInfo> callback) {
+      AccessContainerGetContainerMDataInfoNative(appPtr, name, callback.ToHandlePtr(), OnMDataInfoCb);
     }
 
 #if __IOS__
@@ -80,7 +80,16 @@ namespace SafeApp.AppBindings {
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "access_container_get_container_mdata_info")]
 #endif
-    public static extern void AccessContainerGetContainerMDataInfoNative(IntPtr appPtr, string name, IntPtr self, UlongCb callback);
+    public static extern void AccessContainerGetContainerMDataInfoNative(IntPtr appPtr, string name, IntPtr self, MDataInfoCb callback);
+
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(MDataInfoCb))]
+#endif
+    private static void OnMDataInfoCb(IntPtr self, IntPtr result, IntPtr mdataInfo)
+    {
+      self.HandlePtrToType<Action<FfiResult, MDataInfo>>()(Marshal.PtrToStructure<FfiResult>(result), Marshal.PtrToStructure<MDataInfo>(mdataInfo));
+    }
 
     #endregion
 
@@ -101,7 +110,7 @@ namespace SafeApp.AppBindings {
 
     #region AppInitLogging
 
-    public void AppInitLogging(string fileName, ResultCb callback) {
+    public void AppInitLogging(string fileName, Action<FfiResult> callback) {
       AppInitLoggingNative(fileName, callback.ToHandlePtr(), OnResultCb);
     }
 
@@ -146,9 +155,11 @@ namespace SafeApp.AppBindings {
 
     #region AppRegistered
 
-    public void AppRegistered(string appId, IntPtr ffiAuthGrantedPtr, IntCb netObsCb, IntPtrCb appRegCb) {
-      AppRegisteredNative(appId, ffiAuthGrantedPtr, netObsCb.ToHandlePtr(), appRegCb.ToHandlePtr(), OnIntCb, OnIntPtrCb);
+    public void AppRegistered(string appId, IntPtr ffiAuthGrantedPtr, Action onDisconnectedCb, Action<FfiResult, IntPtr> appRegCb) {
+      var cbs = new List<object> { onDisconnectedCb, appRegCb };
+      AppRegisteredNative(appId, ffiAuthGrantedPtr, cbs.ToHandlePtr(), OnDisconnectedCb, OnAppRegCb);
     }
+    
 #if __IOS__
     [DllImport("__Internal", EntryPoint = "app_registered")]
 #elif __ANDROID__
@@ -157,16 +168,33 @@ namespace SafeApp.AppBindings {
     public static extern void AppRegisteredNative(
       string appId,
       IntPtr ffiAuthGrantedPtr,
-      IntPtr networkUserData,
       IntPtr userData,
-      IntCb netObsCb,
-      IntPtrCb appRegCb);
+      DisconnectedCb netObsCb,
+      AppRegCb appRegCb);
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(AppRegCb))]
+#endif
+    private static void OnAppRegCb(IntPtr self, IntPtr result, IntPtr appPtr)
+    {
+      var cb = (Action<FfiResult, IntPtr>)self.HandlePtrToType<List<object>>()[1];
+      cb(Marshal.PtrToStructure<FfiResult>(result), appPtr);
+    }
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(DisconnectedCb))]
+#endif
+    private static void OnDisconnectedCb(IntPtr self)
+    {
+      var cb = (Action) self.HandlePtrToType<List<object>>()[0];
+      cb();
+    }
 
     #endregion
 
     #region AppSetAdditionalSearchPath
 
-    public void AppSetAdditionalSearchPath(string path, ResultCb callback) {
+    public void AppSetAdditionalSearchPath(string path, Action<FfiResult> callback) {
       AppSetAdditionalSearchPathNative(path, callback.ToHandlePtr(), OnResultCb);
     }
 
@@ -243,12 +271,12 @@ namespace SafeApp.AppBindings {
 
     public void DecodeIpcMessage(
       string encodedReq,
-      DecodeAuthCb authCb,
-      DecodeUnregCb unregCb,
-      DecodeContCb contCb,
-      DecodeShareMDataCb shareMDataCb,
-      DecodeRevokedCb revokedCb,
-      ListBasedResultCb errorCb) {
+      Action<uint, IntPtr> authCb,
+      Action<uint, IntPtr, IntPtr> unregCb,
+      Action<uint> contCb,
+      Action<uint> shareMDataCb,
+      Action revokedCb,
+      Action<FfiResult> errorCb) {
       var cbs = new List<object> {authCb, unregCb, contCb, shareMDataCb, revokedCb, errorCb};
       DecodeIpcMessageNative(
         encodedReq,
@@ -258,7 +286,7 @@ namespace SafeApp.AppBindings {
         OnDecodeContCb,
         OnDecodeShareMDataCb,
         OnDecodeRevokedCb,
-        OnListBasedResultCb);
+        OnDecodeErrorCb);
     }
 
 #if __IOS__
@@ -274,46 +302,55 @@ namespace SafeApp.AppBindings {
       DecodeContCb contCb,
       DecodeShareMDataCb shareMDataCb,
       DecodeRevokedCb revokedCb,
-      ListBasedResultCb errorCb);
+      DecodeErrorCb errorCb);
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(DecodeAuthCb))]
 #endif
     private static void OnDecodeAuthCb(IntPtr self, uint reqId, IntPtr authGrantedFfiPtr) {
-      var cb = (DecodeAuthCb)self.HandlePtrToType<List<object>>()[0];
-      cb(IntPtr.Zero, reqId, authGrantedFfiPtr);
+      var cb = (Action<uint, IntPtr>)self.HandlePtrToType<List<object>>()[0];
+      cb(reqId, authGrantedFfiPtr);
     }
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(DecodeUnregCb))]
 #endif
     private static void OnDecodeUnregCb(IntPtr self, uint reqId, IntPtr bsConfig, IntPtr bsSize) {
-      var cb = (DecodeUnregCb)self.HandlePtrToType<List<object>>()[1];
-      cb(IntPtr.Zero, reqId, bsConfig, bsSize);
+      var cb = (Action<uint, IntPtr, IntPtr>)self.HandlePtrToType<List<object>>()[1];
+      cb(reqId, bsConfig, bsSize);
     }
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(DecodeContCb))]
 #endif
     private static void OnDecodeContCb(IntPtr self, uint reqId) {
-      var cb = (DecodeContCb)self.HandlePtrToType<List<object>>()[2];
-      cb(IntPtr.Zero, reqId);
+      var cb = (Action<uint>)self.HandlePtrToType<List<object>>()[2];
+      cb(reqId);
     }
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(DecodeShareMDataCb))]
 #endif
     private static void OnDecodeShareMDataCb(IntPtr self, uint reqId) {
-      var cb = (DecodeShareMDataCb)self.HandlePtrToType<List<object>>()[3];
-      cb(IntPtr.Zero, reqId);
+      var cb = (Action<uint>)self.HandlePtrToType<List<object>>()[3];
+      cb(reqId);
     }
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(DecodeRevokedCb))]
 #endif
     private static void OnDecodeRevokedCb(IntPtr self) {
-      var cb = (DecodeRevokedCb)self.HandlePtrToType<List<object>>()[4];
-      cb(IntPtr.Zero);
+      var cb = (Action)self.HandlePtrToType<List<object>>()[4];
+      cb();
+    }
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(DecodeErrorCb))]
+#endif
+    private static void OnDecodeErrorCb(IntPtr self, IntPtr result, uint id)
+    {
+      var cb = (Action<FfiResult>) self.HandlePtrToType<List<object>>()[5];
+      cb(Marshal.PtrToStructure<FfiResult>(result));
     }
 
     #endregion
@@ -365,7 +402,7 @@ namespace SafeApp.AppBindings {
 
     #region EncodeAuthReq
 
-    public void EncodeAuthReq(IntPtr authReq, EncodeAuthReqCb callback) {
+    public void EncodeAuthReq(IntPtr authReq, Action<FfiResult, uint, string> callback) {
       EncodeAuthReqNative(authReq, callback.ToHandlePtr(), OnEncodeAuthReqCb);
     }
 
@@ -379,9 +416,9 @@ namespace SafeApp.AppBindings {
 #if __IOS__
     [MonoPInvokeCallback(typeof(EncodeAuthReqCb))]
 #endif
-    private static void OnEncodeAuthReqCb(IntPtr self, FfiResult result, uint requestId, string encodedReq) {
-      var cb = self.HandlePtrToType<EncodeAuthReqCb>();
-      cb(IntPtr.Zero, result, requestId, encodedReq);
+    private static void OnEncodeAuthReqCb(IntPtr self, IntPtr result, uint requestId, string encodedReq) {
+      var cb = self.HandlePtrToType<Action<FfiResult, uint, string>>();
+      cb(Marshal.PtrToStructure<FfiResult>(result), requestId, encodedReq);
     }
 
     #endregion

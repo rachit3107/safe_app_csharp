@@ -7,7 +7,7 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataPermissionSet {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task AllowAsync(NativeHandle permissionSetH, MDataAction allowAction) {
       var tcs = new TaskCompletionSource<object>();
       ResultCb callback = (_, result) => {
@@ -55,6 +55,6 @@ namespace SafeApp.MData {
       AppBindings.MDataPermissionSetNew(Session.AppPtr, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

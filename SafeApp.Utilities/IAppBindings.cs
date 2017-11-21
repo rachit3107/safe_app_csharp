@@ -2,15 +2,15 @@
 
 namespace SafeApp.Utilities {
   public interface IAppBindings {
-    void AccessContainerGetContainerMDataInfo(IntPtr appPtr, string name, UlongCb callback);
+    void AccessContainerGetContainerMDataInfo(IntPtr appPtr, string name, Action<FfiResult, MDataInfo> callback);
     void AppExeFileStem(StringCb callback);
-    void AppInitLogging(string fileName, ResultCb callback);
+    void AppInitLogging(string fileName, Action<FfiResult> callback);
     void AppOutputLogPath(string fileName, StringCb callback);
     void AppPubSignKey(IntPtr appPtr, UlongCb callback);
 
-    void AppRegistered(string appId, IntPtr authGrantedFfiPtr, IntCb netObsCb, IntPtrCb appRegCb);
+    void AppRegistered(string appId, IntPtr ffiAuthGrantedPtr, Action onDisconnectedCb, Action<FfiResult, IntPtr> appRegCb);
 
-    void AppSetAdditionalSearchPath(string path, ResultCb callback);
+    void AppSetAdditionalSearchPath(string path, Action<FfiResult> callback);
     void CipherOptFree(IntPtr appPtr, ulong cipherOptHandle, ResultCb callback);
     void CipherOptNewAsymmetric(IntPtr appPtr, ulong encryptPubKeyHandle, UlongCb callback);
     void CipherOptNewPlaintext(IntPtr appPtr, UlongCb callback);
@@ -18,16 +18,16 @@ namespace SafeApp.Utilities {
 
     void DecodeIpcMessage(
       string encodedReq,
-      DecodeAuthCb authCb,
-      DecodeUnregCb unregCb,
-      DecodeContCb contCb,
-      DecodeShareMDataCb shareMDataCb,
-      DecodeRevokedCb revokedCb,
-      ListBasedResultCb errorCb);
+      Action<uint, IntPtr> authCb,
+      Action<uint, IntPtr, IntPtr> unregCb,
+      Action<uint> contCb,
+      Action<uint> shareMDataCb,
+      Action revokedCb,
+      Action<FfiResult> errorCb);
 
     void DecryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, ulong skHandle, ByteArrayCb callback);
     void EncGenerateKeyPair(IntPtr appPtr, EncGenerateKeyPairCb callback);
-    void EncodeAuthReq(IntPtr authReq, EncodeAuthReqCb callback);
+    void EncodeAuthReq(IntPtr authReq, Action<FfiResult, uint, string> callback);
     void EncPubKeyFree(IntPtr appPtr, ulong encryptPubKeyHandle, ResultCb callback);
     void EncPubKeyGet(IntPtr appPtr, ulong encryptPubKeyHandle, IntPtrCb callback);
     void EncPubKeyNew(IntPtr appPtr, IntPtr asymPublicKey, UlongCb callback);

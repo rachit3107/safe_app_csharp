@@ -7,7 +7,7 @@ using SafeApp.Utilities;
 namespace SafeApp.Misc {
   public static class CipherOpt {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task FreeAsync(ulong cipherOptHandle) {
       var tcs = new TaskCompletionSource<object>();
       ResultCb callback = (_, result) => {
@@ -70,6 +70,6 @@ namespace SafeApp.Misc {
       AppBindings.CipherOptNewSymmetric(Session.AppPtr, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

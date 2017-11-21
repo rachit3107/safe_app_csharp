@@ -11,7 +11,7 @@ namespace SafeApp.Tests.Android {
 
     [TearDown]
     public void Tear() { }
-
+    
     [Test]
     public void RustLog() {
       var configPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);

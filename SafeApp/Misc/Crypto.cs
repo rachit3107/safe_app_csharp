@@ -11,7 +11,7 @@ namespace SafeApp.Misc {
   public static class Crypto {
     private const int KeyLen = 32;
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task<NativeHandle> AppPubSignKeyAsync() {
       var tcs = new TaskCompletionSource<NativeHandle>();
       UlongCb callback = (_, result, appPubSignKeyH) => {
@@ -195,6 +195,6 @@ namespace SafeApp.Misc {
       AppBindings.SignKeyFree(Session.AppPtr, signKeyHandle, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

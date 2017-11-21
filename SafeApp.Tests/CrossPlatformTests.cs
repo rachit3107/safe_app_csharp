@@ -11,7 +11,7 @@ namespace SafeApp.Tests {
 
     [TearDown]
     public void Tear() { }
-
+    /*
     [Test]
     public void RandomAppCreate() {
       var appPtr = IntPtr.Zero;
@@ -19,6 +19,6 @@ namespace SafeApp.Tests {
       Assert.AreNotEqual(appPtr, IntPtr.Zero);
       Session.AppPtr = appPtr;
       Assert.DoesNotThrow(async () => await MDataEntryActions.NewAsync());
-    }
+    }*/
   }
 }

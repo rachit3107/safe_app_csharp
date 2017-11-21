@@ -10,7 +10,7 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataEntries {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task<List<(List<byte>, List<byte>, ulong)>> ForEachAsync(NativeHandle entH) {
       var tcs = new TaskCompletionSource<List<(List<byte>, List<byte>, ulong)>>();
       var entries = new List<(List<byte>, List<byte>, ulong)>();
@@ -102,6 +102,6 @@ namespace SafeApp.MData {
       AppBindings.MDataEntriesNew(Session.AppPtr, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

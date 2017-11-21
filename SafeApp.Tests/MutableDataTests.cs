@@ -8,6 +8,7 @@ using SafeApp.Utilities;
 namespace SafeApp.Tests {
   [TestFixture]
   internal class MutableDataTests {
+    /*
     [Test]
     public async void RandomPrivateMutableDataUpdateAction() {
       Utils.InitialiseSessionForRandomTestApp();
@@ -86,6 +87,6 @@ namespace SafeApp.Tests {
           Assert.AreEqual(2, len.ToInt32());
         }
       }
-    }
+    }*/
   }
 }

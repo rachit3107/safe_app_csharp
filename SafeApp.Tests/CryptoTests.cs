@@ -7,7 +7,7 @@ namespace SafeApp.Tests {
   [TestFixture]
   internal class CryptoTests {
     private const int EncKeySize = 32;
-
+    /*
     [Test]
     public async void GenerateEncKeyPair() {
       Utils.InitialiseSessionForRandomTestApp();
@@ -57,6 +57,6 @@ namespace SafeApp.Tests {
       Assert.AreEqual(plainBytes, decryptedBytes);
       await Crypto.EncPubKeyFreeAsync(encKeyPairTuple.Item1);
       await Crypto.EncSecretKeyFreeAsync(encKeyPairTuple.Item2);
-    }
+    }*/
   }
 }

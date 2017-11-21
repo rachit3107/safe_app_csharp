@@ -9,7 +9,7 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataKeys {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task<List<List<byte>>> ForEachAsync(NativeHandle entKeysH) {
       var tcs = new TaskCompletionSource<List<List<byte>>>();
       var keys = new List<List<byte>>();
@@ -62,6 +62,6 @@ namespace SafeApp.MData {
       AppBindings.MDataKeysLen(Session.AppPtr, mDataInfoH, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }

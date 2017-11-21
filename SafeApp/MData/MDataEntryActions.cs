@@ -10,7 +10,7 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataEntryActions {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-
+    /*
     public static Task FreeAsync(ulong entryActionsH) {
       var tcs = new TaskCompletionSource<object>();
       ResultCb callback = (_, result) => {
@@ -72,6 +72,6 @@ namespace SafeApp.MData {
       AppBindings.MDataEntryActionsNew(Session.AppPtr, callback);
 
       return tcs.Task;
-    }
+    }*/
   }
 }
