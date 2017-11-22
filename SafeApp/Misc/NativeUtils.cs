@@ -14,7 +14,7 @@ namespace SafeApp.Misc {
     public static Task<List<byte>> Sha3HashAsync(List<byte> source) {
       var tcs = new TaskCompletionSource<List<byte>>();
       var sourcePtr = source.ToIntPtr();
-      ByteArrayCb callback = (_, result, digestPtr, digestLen) => {
+      Action<FfiResult, IntPtr, IntPtr> callback = (result, digestPtr, digestLen) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;

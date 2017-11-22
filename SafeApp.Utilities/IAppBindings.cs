@@ -6,15 +6,15 @@ namespace SafeApp.Utilities {
     void AppExeFileStem(StringCb callback);
     void AppInitLogging(string fileName, Action<FfiResult> callback);
     void AppOutputLogPath(string fileName, StringCb callback);
-    void AppPubSignKey(IntPtr appPtr, UlongCb callback);
+    void AppPubSignKey(IntPtr appPtr, Action<FfiResult, ulong> callback);
 
     void AppRegistered(string appId, IntPtr ffiAuthGrantedPtr, Action onDisconnectedCb, Action<FfiResult, IntPtr> appRegCb);
 
     void AppSetAdditionalSearchPath(string path, Action<FfiResult> callback);
-    void CipherOptFree(IntPtr appPtr, ulong cipherOptHandle, ResultCb callback);
-    void CipherOptNewAsymmetric(IntPtr appPtr, ulong encryptPubKeyHandle, UlongCb callback);
-    void CipherOptNewPlaintext(IntPtr appPtr, UlongCb callback);
-    void CipherOptNewSymmetric(IntPtr appPtr, UlongCb callback);
+    void CipherOptFree(IntPtr appPtr, ulong cipherOptHandle, Action<FfiResult> callback);
+    void CipherOptNewAsymmetric(IntPtr appPtr, ulong encryptPubKeyHandle, Action<FfiResult, ulong> callback);
+    void CipherOptNewPlaintext(IntPtr appPtr, Action<FfiResult, ulong> callback);
+    void CipherOptNewSymmetric(IntPtr appPtr, Action<FfiResult, ulong> callback);
 
     void DecodeIpcMessage(
       string encodedReq,
@@ -25,21 +25,28 @@ namespace SafeApp.Utilities {
       Action revokedCb,
       Action<FfiResult> errorCb);
 
-    void DecryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, ulong skHandle, ByteArrayCb callback);
-    void EncGenerateKeyPair(IntPtr appPtr, EncGenerateKeyPairCb callback);
+    void DecryptSealedBox(
+      IntPtr appPtr,
+      IntPtr data,
+      IntPtr len,
+      ulong pkHandle,
+      ulong skHandle,
+      Action<FfiResult, IntPtr, IntPtr> callback);
+
+    void EncGenerateKeyPair(IntPtr appPtr, Action<FfiResult, ulong, ulong> callback);
     void EncodeAuthReq(IntPtr authReq, Action<FfiResult, uint, string> callback);
-    void EncPubKeyFree(IntPtr appPtr, ulong encryptPubKeyHandle, ResultCb callback);
-    void EncPubKeyGet(IntPtr appPtr, ulong encryptPubKeyHandle, IntPtrCb callback);
-    void EncPubKeyNew(IntPtr appPtr, IntPtr asymPublicKey, UlongCb callback);
-    void EncryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, ByteArrayCb callback);
-    void EncSecretKeyFree(IntPtr appPtr, ulong encryptSecKeyHandle, ResultCb callback);
-    void EncSecretKeyGet(IntPtr appPtr, ulong encryptSecKeyHandle, IntPtrCb callback);
-    void EncSecretKeyNew(IntPtr appPtr, IntPtr asymSecretKey, UlongCb callback);
+    void EncPubKeyFree(IntPtr appPtr, ulong encryptPubKeyHandle, Action<FfiResult> callback);
+    void EncPubKeyGet(IntPtr appPtr, ulong encryptPubKeyHandle, Action<FfiResult, IntPtr> callback);
+    void EncPubKeyNew(IntPtr appPtr, IntPtr asymPublicKey, Action<FfiResult, ulong> callback);
+    void EncryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, Action<FfiResult, IntPtr, IntPtr> callback);
+    void EncSecretKeyFree(IntPtr appPtr, ulong encryptSecKeyHandle, Action<FfiResult> callback);
+    void EncSecretKeyGet(IntPtr appPtr, ulong encryptSecKeyHandle, Action<FfiResult, IntPtr> callback);
+    void EncSecretKeyNew(IntPtr appPtr, IntPtr asymSecretKey, Action<FfiResult, ulong> callback);
     void FreeApp(IntPtr appPtr);
 
-    void MDataEntriesForEach(IntPtr appPtr, ulong entriesHandle, MDataEntriesForEachCb forEachCallback, ListBasedResultCb resultCallback);
+    void MDataEntriesForEach(IntPtr appPtr, ulong entriesHandle, Action<IntPtr, IntPtr, IntPtr, IntPtr, ulong> forEachCallback, Action<FfiResult> resultCallback);
 
-    void MDataEntriesFree(IntPtr appPtr, ulong entriesHandle, ResultCb callback);
+    void MDataEntriesFree(IntPtr appPtr, ulong entriesHandle, Action<FfiResult> callback);
 
     void MDataEntriesInsert(
       IntPtr appPtr,
@@ -48,11 +55,11 @@ namespace SafeApp.Utilities {
       IntPtr keyLen,
       IntPtr valuePtr,
       IntPtr valueLen,
-      ResultCb callback);
+      Action<FfiResult> callback);
 
-    void MDataEntriesLen(IntPtr appPtr, ulong entriesHandle, MDataEntriesLenCb callback);
-    void MDataEntriesNew(IntPtr appPtr, UlongCb callback);
-    void MDataEntryActionsFree(IntPtr appPtr, ulong actionsHandle, ResultCb callback);
+    void MDataEntriesLen(IntPtr appPtr, ulong entriesHandle, Action<FfiResult, ulong> callback);
+    void MDataEntriesNew(IntPtr appPtr, Action<FfiResult, ulong> callback);
+    void MDataEntryActionsFree(IntPtr appPtr, ulong actionsHandle, Action<FfiResult> callback);
 
     void MDataEntryActionsInsert(
       IntPtr appPtr,
@@ -61,55 +68,53 @@ namespace SafeApp.Utilities {
       IntPtr keyLen,
       IntPtr valuePtr,
       IntPtr valueLen,
-      ResultCb callback);
+      Action<FfiResult> callback);
 
-    void MDataEntryActionsNew(IntPtr appPtr, UlongCb callback);
-    void MDataGetValue(IntPtr appPtr, ulong infoHandle, IntPtr keyPtr, IntPtr keyLen, MDataGetValueCb callback);
-    void MDataInfoDecrypt(IntPtr appPtr, ulong mDataInfoH, IntPtr cipherText, IntPtr cipherLen, ByteArrayCb callback);
-    void MDataInfoDeserialise(IntPtr appPtr, IntPtr ptr, IntPtr len, UlongCb callback);
+    void MDataEntryActionsNew(IntPtr appPtr, Action<FfiResult, ulong> callback);
+    void MDataGetValue(IntPtr appPtr, IntPtr info, IntPtr keyPtr, IntPtr keyLen, Action<FfiResult, IntPtr, IntPtr, ulong> callback);
+    void MDataInfoDecrypt(IntPtr mDataInfoPtr, IntPtr cipherText, IntPtr cipherLen, Action<FfiResult, IntPtr, IntPtr> callback);
+    void MDataInfoDeserialise(IntPtr data, IntPtr len, Action<FfiResult, IntPtr> callback);
 
-    void MDataInfoEncryptEntryKey(IntPtr appPtr, ulong infoH, IntPtr inputPtr, IntPtr inputLen, ByteArrayCb callback);
+    void MDataInfoEncryptEntryKey(IntPtr info, IntPtr inputPtr, IntPtr inputLen, Action<FfiResult, IntPtr, IntPtr> callback);
 
-    void MDataInfoEncryptEntryValue(IntPtr appPtr, ulong infoH, IntPtr inputPtr, IntPtr inputLen, ByteArrayCb callback);
+    void MDataInfoEncryptEntryValue(IntPtr info, IntPtr inputPtr, IntPtr inputLen, Action<FfiResult, IntPtr, IntPtr> callback);
 
-    void MDataInfoFree(IntPtr appPtr, ulong infoHandle, ResultCb callback);
-    void MDataInfoNewPublic(IntPtr appPtr, IntPtr xorNameArr, ulong typeTag, UlongCb callback);
-    void MDataInfoRandomPrivate(IntPtr appPtr, ulong typeTag, UlongCb callback);
-    void MDataInfoRandomPublic(IntPtr appPtr, ulong typeTag, UlongCb callback);
-    void MDataInfoSerialise(IntPtr appPtr, ulong infoHandle, ByteArrayCb callback);
-    void MDataKeysForEach(IntPtr appPtr, ulong keysHandle, MDataKeysForEachCb forEachCb, ResultCb resCb);
+    void MDataInfoNewPublic(IntPtr xorNameArr, ulong typeTag, Action<FfiResult, IntPtr> callback);
+    void MDataInfoRandomPrivate(ulong typeTag, Action<FfiResult, IntPtr> callback);
+    void MDataInfoRandomPublic(ulong typeTag, Action<FfiResult, IntPtr> callback);
+    void MDataInfoSerialise(IntPtr infoHandle, Action<FfiResult, IntPtr, IntPtr> callback);
+    void MDataKeysForEach(IntPtr appPtr, ulong keysHandle, Action<IntPtr, IntPtr> forEachCb, Action<FfiResult> resCb);
 
-    void MDataKeysFree(IntPtr appPtr, ulong keysHandle, ResultCb callback);
+    void MDataKeysFree(IntPtr appPtr, ulong keysHandle, Action<FfiResult> callback);
 
-    void MDataKeysLen(IntPtr appPtr, ulong keysHandle, IntPtrCb callback);
-    void MDataListEntries(IntPtr appPtr, ulong infoHandle, UlongCb callback);
-    void MDataListKeys(IntPtr appPtr, ulong infoHandle, UlongCb callback);
-    void MDataMutateEntries(IntPtr appPtr, ulong infoHandle, ulong actionsHandle, ResultCb callback);
+    void MDataKeysLen(IntPtr appPtr, ulong keysHandle, Action<FfiResult, IntPtr> callback);
+    void MDataListEntries(IntPtr appPtr, IntPtr info, Action<FfiResult, ulong> callback);
+    void MDataListKeys(IntPtr appPtr, IntPtr info, Action<FfiResult, ulong> callback);
+    void MDataMutateEntries(IntPtr appPtr, IntPtr info, ulong actionsHandle, Action<FfiResult> callback);
     void MDataPermissionSetAllow(IntPtr appPtr, ulong setHandle, MDataAction action, ResultCb callback);
     void MDataPermissionSetFree(IntPtr appPtr, ulong setHandle, ResultCb callback);
     void MDataPermissionSetNew(IntPtr appPtr, UlongCb callback);
-    void MDataPermissionsFree(IntPtr appPtr, ulong permissionsHandle, ResultCb callback);
+    void MDataPermissionsFree(IntPtr appPtr, ulong permissionsHandle, Action<FfiResult> callback);
 
-    void MDataPermissionsInsert(IntPtr appPtr, ulong permissionsHandle, ulong userHandle, ulong permissionSetHandle, ResultCb callback);
+    void MDataPermissionsInsert(IntPtr appPtr, ulong permissionsHandle, ulong userHandle, IntPtr permissionSetHandle, Action<FfiResult> callback);
 
-    void MDataPermissionsNew(IntPtr appPtr, UlongCb callback);
-    void MDataPut(IntPtr appPtr, ulong infoHandle, ulong permissionsHandle, ulong entriesHandle, ResultCb callback);
-    void Sha3Hash(IntPtr data, IntPtr len, ByteArrayCb callback);
-    void SignKeyFree(IntPtr appPtr, ulong signKeyHandle, ResultCb callback);
+    void MDataPermissionsNew(IntPtr appPtr, Action<FfiResult, ulong> callback);
+    void MDataPut(IntPtr appPtr, IntPtr infoHandle, ulong permissionsHandle, ulong entriesHandle, Action<FfiResult> callback);
+    void Sha3Hash(IntPtr data, IntPtr len, Action<FfiResult, IntPtr, IntPtr> callback);
 
     // ReSharper disable InconsistentNaming
-    void IDataCloseSelfEncryptor(IntPtr appPtr, ulong seH, ulong cipherOptH, IntPtrCb callback);
+    void IDataCloseSelfEncryptor(IntPtr appPtr, ulong seH, ulong cipherOptH, Action<FfiResult, IntPtr> callback);
 
-    void IDataFetchSelfEncryptor(IntPtr appPtr, IntPtr xorNameArr, UlongCb callback);
-    void IDataNewSelfEncryptor(IntPtr appPtr, UlongCb callback);
+    void IDataFetchSelfEncryptor(IntPtr appPtr, IntPtr xorNameArr, Action<FfiResult, ulong> callback);
+    void IDataNewSelfEncryptor(IntPtr appPtr, Action<FfiResult, ulong> callback);
 
-    void IDataReadFromSelfEncryptor(IntPtr appPtr, ulong seHandle, ulong fromPos, ulong len, ByteArrayCb callback);
+    void IDataReadFromSelfEncryptor(IntPtr appPtr, ulong seHandle, ulong fromPos, ulong len, Action<FfiResult, IntPtr, IntPtr> callback);
 
-    void IDataSelfEncryptorReaderFree(IntPtr appPtr, ulong sEReaderHandle, ResultCb callback);
-    void IDataSelfEncryptorWriterFree(IntPtr appPtr, ulong sEWriterHandle, ResultCb callback);
-    void IDataSize(IntPtr appPtr, ulong seHandle, UlongCb callback);
+    void IDataSelfEncryptorReaderFree(IntPtr appPtr, ulong sEReaderHandle, Action<FfiResult> callback);
+    void IDataSelfEncryptorWriterFree(IntPtr appPtr, ulong sEWriterHandle, Action<FfiResult> callback);
+    void IDataSize(IntPtr appPtr, ulong seHandle, Action<FfiResult, ulong> callback);
 
-    void IDataWriteToSelfEncryptor(IntPtr appPtr, ulong seHandle, IntPtr data, IntPtr size, ResultCb callback);
+    void IDataWriteToSelfEncryptor(IntPtr appPtr, ulong seHandle, IntPtr data, IntPtr size, Action<FfiResult> callback);
     // ReSharper restore InconsistentNaming
   }
 }

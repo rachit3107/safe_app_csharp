@@ -10,18 +10,18 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataEntries {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    /*
+    
     public static Task<List<(List<byte>, List<byte>, ulong)>> ForEachAsync(NativeHandle entH) {
       var tcs = new TaskCompletionSource<List<(List<byte>, List<byte>, ulong)>>();
       var entries = new List<(List<byte>, List<byte>, ulong)>();
 
-      MDataEntriesForEachCb forEachCb = (_, entryKeyPtr, entryKeyLen, entryValPtr, entryValLen, entryVersion) => {
+      Action<IntPtr, IntPtr, IntPtr, IntPtr, ulong> forEachCb = (entryKeyPtr, entryKeyLen, entryValPtr, entryValLen, entryVersion) => {
         var entryKey = entryKeyPtr.ToList<byte>(entryKeyLen);
         var entryVal = entryValPtr.ToList<byte>(entryValLen);
         entries.Add((entryKey, entryVal, entryVersion));
       };
 
-      ListBasedResultCb forEachResCb = (_, result) => {
+      Action<FfiResult> forEachResCb = (result) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -37,7 +37,7 @@ namespace SafeApp.MData {
 
     public static Task FreeAsync(ulong entriesH) {
       var tcs = new TaskCompletionSource<object>();
-      ResultCb callback = (_, result) => {
+      Action<FfiResult> callback = (result) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -54,7 +54,7 @@ namespace SafeApp.MData {
     public static Task InsertAsync(NativeHandle entriesH, List<byte> entKey, List<byte> entVal) {
       var tcs = new TaskCompletionSource<object>();
 
-      ResultCb callback = (_, result) => {
+      Action<FfiResult> callback = (result) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -76,9 +76,12 @@ namespace SafeApp.MData {
 
     public static Task<ulong> LenAsync(NativeHandle entriesHandle) {
       var tcs = new TaskCompletionSource<ulong>();
-      MDataEntriesLenCb callback = (_, len) => {
-        // TODO: no result?
-
+      Action<FfiResult, ulong> callback = (result, len) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
         tcs.SetResult(len);
       };
 
@@ -90,7 +93,7 @@ namespace SafeApp.MData {
     public static Task<NativeHandle> NewAsync() {
       var tcs = new TaskCompletionSource<NativeHandle>();
 
-      UlongCb callback = (_, result, entriesH) => {
+      Action<FfiResult, ulong> callback = (result, entriesH) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -102,6 +105,6 @@ namespace SafeApp.MData {
       AppBindings.MDataEntriesNew(Session.AppPtr, callback);
 
       return tcs.Task;
-    }*/
+    }
   }
 }

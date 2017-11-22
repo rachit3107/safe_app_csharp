@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using SafeApp.AppBindings;
 using SafeApp.Utilities;
 

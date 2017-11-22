@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using SafeApp.AppBindings;
-using SafeApp.MData;
 using SafeApp.Utilities;
 
 // ReSharper disable ConvertToLocalFunction
@@ -9,7 +8,7 @@ using SafeApp.Utilities;
 namespace SafeApp {
   public static class AccessContainer {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    
+
     public static Task<MDataInfo> GetMDataInfoAsync(string containerId) {
       var tcs = new TaskCompletionSource<MDataInfo>();
 

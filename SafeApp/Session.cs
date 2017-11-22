@@ -15,6 +15,14 @@ namespace SafeApp {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
 
     private static readonly Action OnDisconnectedCb;
+
+    private static readonly Action OnDisconnectedObserverCb = () => {
+      Debug.WriteLine("Network Disconnected Fired");
+
+      IsDisconnected = true;
+      OnDisconnected(EventArgs.Empty);
+    };
+
     public static bool IsDisconnected { get => _isDisconnected; private set => _isDisconnected = value; }
 
     public static IntPtr AppPtr {
@@ -88,11 +96,13 @@ namespace SafeApp {
 
             tcs.SetResult(new DecodeIpcResult {AuthGranted = authGranted});
           };
-          Action<uint, IntPtr, IntPtr> unregCb = (id, config, size) => { tcs.SetResult(new DecodeIpcResult {UnRegAppInfo = (config, size)}); };
-          Action <uint> contCb = (id) => { tcs.SetResult(new DecodeIpcResult {ContReqId = id}); };
-          Action<uint> shareMDataCb = (id) => { tcs.SetResult(new DecodeIpcResult {ShareMData = id}); };
+          Action<uint, IntPtr, IntPtr> unregCb = (id, config, size) => {
+            tcs.SetResult(new DecodeIpcResult {UnRegAppInfo = (config, size)});
+          };
+          Action<uint> contCb = id => { tcs.SetResult(new DecodeIpcResult {ContReqId = id}); };
+          Action<uint> shareMDataCb = id => { tcs.SetResult(new DecodeIpcResult {ShareMData = id}); };
           Action revokedCb = () => { tcs.SetResult(new DecodeIpcResult {Revoked = true}); };
-          Action<FfiResult> errorCb = (result) => { tcs.SetException(result.ToException()); };
+          Action<FfiResult> errorCb = result => { tcs.SetException(result.ToException()); };
 
           AppBindings.DecodeIpcMessage(encodedReq, authCb, unregCb, contCb, shareMDataCb, revokedCb, errorCb);
 
@@ -123,8 +133,7 @@ namespace SafeApp {
           };
           var authReqFfiPtr = Helpers.StructToPtr(authReqFfi);
           Action<FfiResult, uint, string> callback = (result, id, req) => {
-            if (result.ErrorCode != 0)
-            {
+            if (result.ErrorCode != 0) {
               tcs.SetException(result.ToException());
               return;
             }
@@ -150,7 +159,7 @@ namespace SafeApp {
         () => {
           var tcs = new TaskCompletionSource<bool>();
 
-          Action<FfiResult> cb2 = (result) => {
+          Action<FfiResult> cb2 = result => {
             if (result.ErrorCode != 0) {
               tcs.SetException(result.ToException());
               return;
@@ -159,7 +168,7 @@ namespace SafeApp {
             tcs.SetResult(true);
           };
 
-          Action<FfiResult> cb1 = (result) => {
+          Action<FfiResult> cb1 = result => {
             if (result.ErrorCode != 0) {
               tcs.SetException(result.ToException());
               return;
@@ -176,12 +185,5 @@ namespace SafeApp {
     private static void OnDisconnected(EventArgs e) {
       Disconnected?.Invoke(null, e);
     }
-
-    private static Action OnDisconnectedObserverCb = () => {
-      Debug.WriteLine("Network Disconnected Fired");
-
-      IsDisconnected = true;
-      OnDisconnected(EventArgs.Empty);
-    };
   }
 }

@@ -6,7 +6,7 @@ using SafeApp.Misc;
 namespace SafeApp.Tests {
   [TestFixture]
   internal class ImmutableDataTests {
-    /*
+    [Test]
     public async void WriteAndReadUsingPainText() {
       var data = new byte[1024];
       new Random().NextBytes(data);
@@ -19,6 +19,6 @@ namespace SafeApp.Tests {
       var len = await IData.IData.SizeAsync(seReaderHandle);
       var readData = await IData.IData.ReadFromSelfEncryptorAsync(seReaderHandle, 0, len);
       Assert.AreEqual(data, readData);
-    }*/
+    }
   }
 }
