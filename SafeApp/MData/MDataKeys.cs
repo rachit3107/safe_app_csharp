@@ -9,16 +9,16 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataKeys {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    
+
     public static Task<List<List<byte>>> ForEachAsync(NativeHandle entKeysH) {
       var tcs = new TaskCompletionSource<List<List<byte>>>();
       var keys = new List<List<byte>>();
-      Action<IntPtr, IntPtr> forEachCb = (bytePtr, len) => {
-        var key = bytePtr.ToList<byte>(len);
+      Action<MDataKeyFfi> forEachCb = mdataKey => {
+        var key = mdataKey.DataPtr.ToList<byte>(mdataKey.Len);
         keys.Add(key);
       };
 
-      Action<FfiResult> forEachResCb = (result) => {
+      Action<FfiResult> forEachResCb = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -28,22 +28,6 @@ namespace SafeApp.MData {
       };
 
       AppBindings.MDataKeysForEach(Session.AppPtr, entKeysH, forEachCb, forEachResCb);
-
-      return tcs.Task;
-    }
-
-    public static Task FreeAsync(ulong entKeysH) {
-      var tcs = new TaskCompletionSource<object>();
-      Action<FfiResult> callback = (result) => {
-        if (result.ErrorCode != 0) {
-          tcs.SetException(result.ToException());
-          return;
-        }
-
-        tcs.SetResult(null);
-      };
-
-      AppBindings.MDataKeysFree(Session.AppPtr, entKeysH, callback);
 
       return tcs.Task;
     }

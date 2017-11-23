@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using SafeApp.AppBindings;
@@ -10,10 +11,10 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MData {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    
+
     public static Task<(List<byte>, ulong)> GetValueAsync(MDataInfo info, List<byte> key) {
       var tcs = new TaskCompletionSource<(List<byte>, ulong)>();
-      var infoPtr = info.ToHandlePtr();
+      var infoPtr = Helpers.StructToPtr(info);
       var keyPtr = key.ToIntPtr();
       Action<FfiResult, IntPtr, IntPtr, ulong> callback = (result, dataPtr, dataLen, entryVersion) => {
         if (result.ErrorCode != 0) {
@@ -34,7 +35,7 @@ namespace SafeApp.MData {
 
     public static Task<NativeHandle> ListEntriesAsync(MDataInfo info) {
       var tcs = new TaskCompletionSource<NativeHandle>();
-      var infoPtr = info.ToHandlePtr();
+      var infoPtr = Helpers.StructToPtr(info);
       Action<FfiResult, ulong> callback = (result, mDataEntriesHandle) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
@@ -50,16 +51,16 @@ namespace SafeApp.MData {
       return tcs.Task;
     }
 
-    public static Task<NativeHandle> ListKeysAsync(MDataInfo mDataInfo) {
-      var tcs = new TaskCompletionSource<NativeHandle>();
-      var infoPtr = mDataInfo.ToHandlePtr();
-      Action<FfiResult, ulong> callback = (result, mDataEntKeysH) => {
+    public static Task<List<List<byte>>> ListKeysAsync(MDataInfo mDataInfo) {
+      var tcs = new TaskCompletionSource<List<List<byte>>>();
+      var infoPtr = Helpers.StructToPtr(mDataInfo);
+      Action<FfiResult, List<MDataKeyFfi>> callback = (result, mDataKeys) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
         }
 
-        tcs.SetResult(new NativeHandle(mDataEntKeysH, MDataKeys.FreeAsync));
+        tcs.SetResult(mDataKeys.Select(k => k.DataPtr.ToList<byte>(k.Len)).ToList());
       };
 
       AppBindings.MDataListKeys(Session.AppPtr, infoPtr, callback);
@@ -69,7 +70,8 @@ namespace SafeApp.MData {
 
     public static Task MutateEntriesAsync(MDataInfo mDataInfo, NativeHandle entryActionsH) {
       var tcs = new TaskCompletionSource<object>();
-      Action<FfiResult> callback = (result) => {
+      var infoPtr = Helpers.StructToPtr(mDataInfo);
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -77,7 +79,7 @@ namespace SafeApp.MData {
 
         tcs.SetResult(null);
       };
-      var infoPtr = mDataInfo.ToHandlePtr();
+
       AppBindings.MDataMutateEntries(Session.AppPtr, infoPtr, entryActionsH, callback);
       Marshal.FreeHGlobal(infoPtr);
       return tcs.Task;
@@ -85,7 +87,7 @@ namespace SafeApp.MData {
 
     public static Task PutAsync(MDataInfo mDataInfo, NativeHandle permissionsH, NativeHandle entriesH) {
       var tcs = new TaskCompletionSource<object>();
-      Action<FfiResult> callback = (result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -93,7 +95,7 @@ namespace SafeApp.MData {
 
         tcs.SetResult(null);
       };
-      var infoPtr = mDataInfo.ToHandlePtr();
+      var infoPtr = Helpers.StructToPtr(mDataInfo);
       AppBindings.MDataPut(Session.AppPtr, infoPtr, permissionsH, entriesH, callback);
 
       return tcs.Task;

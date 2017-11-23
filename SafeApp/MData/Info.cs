@@ -10,10 +10,10 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class Info {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    
+
     public static Task<List<byte>> DecryptAsync(MDataInfo mDataInfo, List<byte> cipherText) {
       var tcs = new TaskCompletionSource<List<byte>>();
-      var mdataInfoPtr = mDataInfo.ToHandlePtr();
+      var mdataInfoPtr = Helpers.StructToPtr(mDataInfo);
       var cipherPtr = cipherText.ToIntPtr();
       var cipherLen = (IntPtr)cipherText.Count;
 
@@ -55,7 +55,7 @@ namespace SafeApp.MData {
     public static Task<List<byte>> EncryptEntryKeyAsync(MDataInfo info, List<byte> inputBytes) {
       var tcs = new TaskCompletionSource<List<byte>>();
       var inputBytesPtr = inputBytes.ToIntPtr();
-      var infoPtr = info.ToHandlePtr();
+      var infoPtr = Helpers.StructToPtr(info);
       Action<FfiResult, IntPtr, IntPtr> callback = (result, dataPtr, dataLen) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
@@ -74,7 +74,7 @@ namespace SafeApp.MData {
     public static Task<List<byte>> EncryptEntryValueAsync(MDataInfo info, List<byte> inputBytes) {
       var tcs = new TaskCompletionSource<List<byte>>();
       var inputBytesPtr = inputBytes.ToIntPtr();
-      var infoPtr = info.ToHandlePtr();
+      var infoPtr = Helpers.StructToPtr(info);
       Action<FfiResult, IntPtr, IntPtr> callback = (result, dataPtr, dataLen) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
@@ -90,7 +90,7 @@ namespace SafeApp.MData {
 
       return tcs.Task;
     }
-    
+
     public static Task<MDataInfo> NewPublicAsync(List<byte> xorName, ulong typeTag) {
       var tcs = new TaskCompletionSource<MDataInfo>();
 
@@ -113,7 +113,7 @@ namespace SafeApp.MData {
     public static Task<MDataInfo> RandomPrivateAsync(ulong typeTag) {
       var tcs = new TaskCompletionSource<MDataInfo>();
 
-       Action<FfiResult, IntPtr> callback = (result, privateMDataInfoH) => {
+      Action<FfiResult, IntPtr> callback = (result, privateMDataInfoH) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;

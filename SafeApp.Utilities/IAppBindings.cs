@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SafeApp.Utilities {
   public interface IAppBindings {
     void AccessContainerGetContainerMDataInfo(IntPtr appPtr, string name, Action<FfiResult, MDataInfo> callback);
-    void AppExeFileStem(StringCb callback);
+    void AppExeFileStem(Action<FfiResult, string> callback);
     void AppInitLogging(string fileName, Action<FfiResult> callback);
-    void AppOutputLogPath(string fileName, StringCb callback);
+    void AppOutputLogPath(string fileName, Action<FfiResult, string> callback);
     void AppPubSignKey(IntPtr appPtr, Action<FfiResult, ulong> callback);
 
     void AppRegistered(string appId, IntPtr ffiAuthGrantedPtr, Action onDisconnectedCb, Action<FfiResult, IntPtr> appRegCb);
@@ -44,7 +45,11 @@ namespace SafeApp.Utilities {
     void EncSecretKeyNew(IntPtr appPtr, IntPtr asymSecretKey, Action<FfiResult, ulong> callback);
     void FreeApp(IntPtr appPtr);
 
-    void MDataEntriesForEach(IntPtr appPtr, ulong entriesHandle, Action<IntPtr, IntPtr, IntPtr, IntPtr, ulong> forEachCallback, Action<FfiResult> resultCallback);
+    void MDataEntriesForEach(
+      IntPtr appPtr,
+      ulong entriesHandle,
+      Action<IntPtr, IntPtr, IntPtr, IntPtr, ulong> forEachCallback,
+      Action<FfiResult> resultCallback);
 
     void MDataEntriesFree(IntPtr appPtr, ulong entriesHandle, Action<FfiResult> callback);
 
@@ -83,20 +88,25 @@ namespace SafeApp.Utilities {
     void MDataInfoRandomPrivate(ulong typeTag, Action<FfiResult, IntPtr> callback);
     void MDataInfoRandomPublic(ulong typeTag, Action<FfiResult, IntPtr> callback);
     void MDataInfoSerialise(IntPtr infoHandle, Action<FfiResult, IntPtr, IntPtr> callback);
-    void MDataKeysForEach(IntPtr appPtr, ulong keysHandle, Action<IntPtr, IntPtr> forEachCb, Action<FfiResult> resCb);
+    void MDataKeysForEach(IntPtr appPtr, ulong keysHandle, Action<MDataKeyFfi> forEachCb, Action<FfiResult> resCb);
 
     void MDataKeysFree(IntPtr appPtr, ulong keysHandle, Action<FfiResult> callback);
 
     void MDataKeysLen(IntPtr appPtr, ulong keysHandle, Action<FfiResult, IntPtr> callback);
     void MDataListEntries(IntPtr appPtr, IntPtr info, Action<FfiResult, ulong> callback);
-    void MDataListKeys(IntPtr appPtr, IntPtr info, Action<FfiResult, ulong> callback);
+    void MDataListKeys(IntPtr appPtr, IntPtr info, Action<FfiResult, List<MDataKeyFfi>> callback);
     void MDataMutateEntries(IntPtr appPtr, IntPtr info, ulong actionsHandle, Action<FfiResult> callback);
     void MDataPermissionSetAllow(IntPtr appPtr, ulong setHandle, MDataAction action, ResultCb callback);
     void MDataPermissionSetFree(IntPtr appPtr, ulong setHandle, ResultCb callback);
     void MDataPermissionSetNew(IntPtr appPtr, UlongCb callback);
     void MDataPermissionsFree(IntPtr appPtr, ulong permissionsHandle, Action<FfiResult> callback);
 
-    void MDataPermissionsInsert(IntPtr appPtr, ulong permissionsHandle, ulong userHandle, IntPtr permissionSetHandle, Action<FfiResult> callback);
+    void MDataPermissionsInsert(
+      IntPtr appPtr,
+      ulong permissionsHandle,
+      ulong userHandle,
+      IntPtr permissionSetHandle,
+      Action<FfiResult> callback);
 
     void MDataPermissionsNew(IntPtr appPtr, Action<FfiResult, ulong> callback);
     void MDataPut(IntPtr appPtr, IntPtr infoHandle, ulong permissionsHandle, ulong entriesHandle, Action<FfiResult> callback);

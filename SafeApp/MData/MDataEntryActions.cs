@@ -10,10 +10,10 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataEntryActions {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    
+
     public static Task FreeAsync(ulong entryActionsH) {
       var tcs = new TaskCompletionSource<object>();
-      Action<FfiResult> callback = (result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -30,7 +30,7 @@ namespace SafeApp.MData {
     public static Task InsertAsync(NativeHandle entryActionsH, List<byte> entKey, List<byte> entVal) {
       var tcs = new TaskCompletionSource<object>();
 
-      Action<FfiResult> callback = (result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;

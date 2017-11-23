@@ -22,7 +22,7 @@ namespace SafeApp.Tests {
           await MData.MData.PutAsync(mdInfo, permissionsH, NativeHandle.Zero);
         }
       }
-      
+
       using (var entryActionsH = await MDataEntryActions.NewAsync()) {
         var key = Encoding.Default.GetBytes(actKey).ToList();
         var value = Encoding.Default.GetBytes(actValue).ToList();
@@ -32,10 +32,8 @@ namespace SafeApp.Tests {
         await MData.MData.MutateEntriesAsync(mdInfo, entryActionsH);
       }
 
-      using (var keysHandle = await MData.MData.ListKeysAsync(mdInfo)) {
-        var len = await MDataKeys.LenAsync(keysHandle);
-        Assert.AreEqual(1, len.ToInt32());
-      }
+      var keys = await MData.MData.ListKeysAsync(mdInfo);
+      Assert.AreEqual(1, keys.Count);
 
       using (var entriesHandle = await MData.MData.ListEntriesAsync(mdInfo)) {
         var entries = await MDataEntries.ForEachAsync(entriesHandle);
@@ -48,7 +46,7 @@ namespace SafeApp.Tests {
         Assert.AreEqual(actValue, encoding.GetString(value.ToArray()));
       }
     }
-    
+
     [Test]
     public async void RandomPublicMutableDataInsertAction() {
       Utils.InitialiseSessionForRandomTestApp();
@@ -76,10 +74,8 @@ namespace SafeApp.Tests {
         await MData.MData.MutateEntriesAsync(mdInfo, entryActionsH);
       }
 
-      using (var keysHandle = await MData.MData.ListKeysAsync(mdInfo)) {
-        var len = await MDataKeys.LenAsync(keysHandle);
-        Assert.AreEqual(2, len.ToInt32());
-      }
+      var keys = await MData.MData.ListKeysAsync(mdInfo);
+      Assert.AreEqual(2, keys.Count);
     }
   }
 }

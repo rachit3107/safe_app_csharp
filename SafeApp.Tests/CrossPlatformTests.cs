@@ -12,7 +12,6 @@ namespace SafeApp.Tests {
     [TearDown]
     public void Tear() { }
 
-    
     [Test]
     public void RandomAppCreate() {
       var appPtr = IntPtr.Zero;

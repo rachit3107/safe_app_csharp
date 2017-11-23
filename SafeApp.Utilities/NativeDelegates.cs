@@ -7,9 +7,7 @@ namespace SafeApp.Utilities {
 
   public delegate void AppRegCb(IntPtr self, IntPtr result, IntPtr value);
 
-  public delegate void ListBasedResultCb(IntPtr self, FfiResult result);
-
-  public delegate void StringCb(IntPtr self, FfiResult result, string exeFileStem);
+ public delegate void StringCb(IntPtr self, IntPtr result, string exeFileStem);
 
   public delegate void ByteArrayCb(IntPtr self, IntPtr result, IntPtr arrayIntPtr, IntPtr len);
 
@@ -37,7 +35,9 @@ namespace SafeApp.Utilities {
 
   public delegate void MDataInfoCb(IntPtr self, IntPtr result, IntPtr mdataInfo);
 
-  public delegate void MDataKeysForEachCb(IntPtr self, IntPtr bytePtr, IntPtr byteLen);
+  public delegate void MDataKeysForEachCb(IntPtr self, IntPtr mdataKeys);
+
+  public delegate void MDataKeyListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size);
 
   public delegate void MDataEntriesLenCb(IntPtr self, ulong len);
 

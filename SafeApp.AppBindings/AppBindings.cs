@@ -25,8 +25,8 @@ namespace SafeApp.AppBindings {
 #if __IOS__
     [MonoPInvokeCallback(typeof(StringCb))]
 #endif
-    private static void OnStringCb(IntPtr self, FfiResult result, string value) {
-      self.HandlePtrToType<StringCb>()(IntPtr.Zero, result, value);
+    private static void OnStringCb(IntPtr self, IntPtr result, string value) {
+      self.HandlePtrToType<Action<FfiResult, string>>()(Marshal.PtrToStructure<FfiResult>(result), value);
     }
 
 #if __IOS__
@@ -49,15 +49,6 @@ namespace SafeApp.AppBindings {
     private static void OnByteArrayCb(IntPtr self, IntPtr result, IntPtr data, IntPtr dataLen) {
       var cb = self.HandlePtrToType<Action<FfiResult, IntPtr, IntPtr>>();
       cb(Marshal.PtrToStructure<FfiResult>(result), data, dataLen);
-    }
-
-#if __IOS__
-    [MonoPInvokeCallback(typeof(ListBasedResultCb))]
-#endif
-    private static void OnListBasedResultCb(IntPtr self, FfiResult result) {
-      var list = self.HandlePtrToType<List<object>>();
-      var cb = (ListBasedResultCb)list[list.Count - 1];
-      cb(IntPtr.Zero, result);
     }
 
     #endregion
@@ -88,7 +79,7 @@ namespace SafeApp.AppBindings {
 
     #region AppExeFileStem
 
-    public void AppExeFileStem(StringCb callback) {
+    public void AppExeFileStem(Action<FfiResult, String> callback) {
       AppExeFileStemNative(callback.ToHandlePtr(), OnStringCb);
     }
 
@@ -118,7 +109,7 @@ namespace SafeApp.AppBindings {
 
     #region AppOutputLogPath
 
-    public void AppOutputLogPath(string fileName, StringCb callback) {
+    public void AppOutputLogPath(string fileName, Action<FfiResult, string> callback) {
       AppOutputLogPathNative(fileName, callback.ToHandlePtr(), OnStringCb);
     }
 
@@ -1036,7 +1027,7 @@ namespace SafeApp.AppBindings {
 
     #region MDataKeysForEach
 
-    public void MDataKeysForEach(IntPtr appPtr, ulong keysHandle, Action<IntPtr, IntPtr> forEachCb, Action<FfiResult> resCb) {
+    public void MDataKeysForEach(IntPtr appPtr, ulong keysHandle, Action<MDataKeyFfi> forEachCb, Action<FfiResult> resCb) {
       var cbs = new List<object> {forEachCb, resCb};
       var a = cbs.ToHandlePtr();
       Debug.WriteLine(a);
@@ -1058,9 +1049,9 @@ namespace SafeApp.AppBindings {
 #if __IOS__
     [MonoPInvokeCallback(typeof(MDataKeysForEachCb))]
 #endif
-    private static void OnMDataKeysForEachCb(IntPtr self, IntPtr bytePtr, IntPtr byteLen) {
-      var cb = (Action<IntPtr, IntPtr>)self.HandlePtrToType<List<object>>(false)[0];
-      cb(bytePtr, byteLen);
+    private static void OnMDataKeysForEachCb(IntPtr self, IntPtr mdataKey) {
+      var cb = (Action<MDataKeyFfi>)self.HandlePtrToType<List<object>>(false)[0];
+      cb(Marshal.PtrToStructure<MDataKeyFfi>(mdataKey));
     }
 
 #if __IOS__
@@ -1121,8 +1112,18 @@ namespace SafeApp.AppBindings {
 
     #region MDataListKeys
 
-    public void MDataListKeys(IntPtr appPtr, IntPtr infoHandle, Action<FfiResult, ulong> callback) {
-      MDataListKeysNative(appPtr, infoHandle, callback.ToHandlePtr(), OnUlongCb);
+    public void MDataListKeys(IntPtr appPtr, IntPtr infoHandle, Action<FfiResult, List<MDataKeyFfi>> callback) {
+      MDataListKeysNative(appPtr, infoHandle, callback.ToHandlePtr(), OnMDataKeyListCb);
+    }
+
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(MDataKeyListCb))]
+#endif
+    private static void OnMDataKeyListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size)
+    {
+      var cb = self.HandlePtrToType<Action<FfiResult, List<MDataKeyFfi>>>();
+      cb(Marshal.PtrToStructure<FfiResult>(result), listPtr.ToList<MDataKeyFfi>(size));
     }
 
 #if __IOS__
@@ -1130,7 +1131,7 @@ namespace SafeApp.AppBindings {
 #elif __ANDROID__
     [DllImport("safe_app", EntryPoint = "mdata_list_keys")]
 #endif
-    public static extern void MDataListKeysNative(IntPtr appPtr, IntPtr infoHandle, IntPtr self, UlongCb callback);
+    public static extern void MDataListKeysNative(IntPtr appPtr, IntPtr infoHandle, IntPtr self, MDataKeyListCb callback);
 
     #endregion
 

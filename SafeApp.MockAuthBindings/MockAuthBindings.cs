@@ -13,7 +13,7 @@ namespace SafeApp.MockAuthBindings {
     #region TestCreateApp
 
     public IntPtr TestCreateApp() {
-      var ret = TestCreateAppNative(out IntPtr appPtr);
+      var ret = TestCreateAppNative(out var appPtr);
       if (ret != 0) {
         throw new InvalidOperationException();
       }

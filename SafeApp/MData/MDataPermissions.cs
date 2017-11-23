@@ -9,10 +9,10 @@ using SafeApp.Utilities;
 namespace SafeApp.MData {
   public static class MDataPermissions {
     private static readonly IAppBindings AppBindings = AppResolver.Current;
-    
+
     public static Task FreeAsync(ulong permissionsH) {
       var tcs = new TaskCompletionSource<object>();
-      Action<FfiResult> callback = (result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -28,9 +28,9 @@ namespace SafeApp.MData {
 
     public static Task InsertAsync(NativeHandle permissionsH, NativeHandle forUserH, PermissionSet permissionSet) {
       var tcs = new TaskCompletionSource<object>();
-      var permissionSetPtr = permissionSet.ToHandlePtr();
+      var permissionSetPtr = Helpers.StructToPtr(permissionSet);
 
-      Action<FfiResult> callback = (result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
