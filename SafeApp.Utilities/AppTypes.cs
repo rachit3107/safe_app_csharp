@@ -9,7 +9,7 @@ namespace SafeApp.Utilities {
     kDelete,
     kManagePermissions
   }
-  
+
   public struct MDataKeyFfi {
     public IntPtr DataPtr;
     public IntPtr Len;

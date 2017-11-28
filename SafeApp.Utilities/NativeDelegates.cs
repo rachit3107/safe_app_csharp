@@ -1,13 +1,16 @@
 ﻿using System;
 
 namespace SafeApp.Utilities {
+
+  public delegate void DecodeErrorCb(IntPtr self, IntPtr result, uint reqId);
+
   public delegate void ResultCb(IntPtr self, IntPtr result);
 
   public delegate void DisconnectedCb(IntPtr self);
 
   public delegate void AppRegCb(IntPtr self, IntPtr result, IntPtr value);
 
- public delegate void StringCb(IntPtr self, IntPtr result, string exeFileStem);
+  public delegate void StringCb(IntPtr self, IntPtr result, string exeFileStem);
 
   public delegate void ByteArrayCb(IntPtr self, IntPtr result, IntPtr arrayIntPtr, IntPtr len);
 
@@ -53,5 +56,4 @@ namespace SafeApp.Utilities {
 
   public delegate void DecodeRevokedCb(IntPtr self);
 
-  public delegate void DecodeErrorCb(IntPtr self, IntPtr result, uint reqId);
 }

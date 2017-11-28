@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SafeApp.Utilities;
-
 #if __IOS__
 using ObjCRuntime;
 
@@ -79,7 +78,7 @@ namespace SafeApp.AppBindings {
 
     #region AppExeFileStem
 
-    public void AppExeFileStem(Action<FfiResult, String> callback) {
+    public void AppExeFileStem(Action<FfiResult, string> callback) {
       AppExeFileStemNative(callback.ToHandlePtr(), OnStringCb);
     }
 
@@ -711,10 +710,9 @@ namespace SafeApp.AppBindings {
       IntPtr entryVal,
       IntPtr entryValLen,
       ulong entryVersion) {
-      var cb = (Action<IntPtr, IntPtr, IntPtr,IntPtr, ulong>)self.HandlePtrToType<List<object>>(false)[0];
+      var cb = (Action<IntPtr, IntPtr, IntPtr, IntPtr, ulong>)self.HandlePtrToType<List<object>>(false)[0];
       cb(entryKey, entryKeyLen, entryVal, entryValLen, entryVersion);
     }
-
 
 #if __IOS__
     [MonoPInvokeCallback(typeof(EntriesForEachResultCb))]
@@ -783,7 +781,7 @@ namespace SafeApp.AppBindings {
     [DllImport("safe_app", EntryPoint = "mdata_entries_len")]
 #endif
     public static extern void MDataEntriesLenNative(IntPtr appPtr, ulong entriesHandle, IntPtr self, UlongCb callback);
-    
+
     #endregion
 
     #region MDataEntriesNew
@@ -964,10 +962,10 @@ namespace SafeApp.AppBindings {
       ByteArrayCb callback);
 
     #endregion
-    
+
     #region MDataInfoNewPublic
 
-    public void MDataInfoNewPublic( IntPtr xorNameArr, ulong typeTag, Action<FfiResult, IntPtr> callback) {
+    public void MDataInfoNewPublic(IntPtr xorNameArr, ulong typeTag, Action<FfiResult, IntPtr> callback) {
       MDataInfoNewPublicNative(xorNameArr, typeTag, callback.ToHandlePtr(), OnIntPtrCb);
     }
 
@@ -1057,8 +1055,7 @@ namespace SafeApp.AppBindings {
 #if __IOS__
     [MonoPInvokeCallback(typeof(MDataKeysForEachResultCb))]
 #endif
-    private static void OnMDataKeysForEachResultCb(IntPtr self, IntPtr result)
-    {
+    private static void OnMDataKeysForEachResultCb(IntPtr self, IntPtr result) {
       var cb = (Action<FfiResult>)self.HandlePtrToType<List<object>>(false)[1];
       cb(Marshal.PtrToStructure<FfiResult>(result));
     }
@@ -1116,12 +1113,10 @@ namespace SafeApp.AppBindings {
       MDataListKeysNative(appPtr, infoHandle, callback.ToHandlePtr(), OnMDataKeyListCb);
     }
 
-
 #if __IOS__
     [MonoPInvokeCallback(typeof(MDataKeyListCb))]
 #endif
-    private static void OnMDataKeyListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size)
-    {
+    private static void OnMDataKeyListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size) {
       var cb = self.HandlePtrToType<Action<FfiResult, List<MDataKeyFfi>>>();
       cb(Marshal.PtrToStructure<FfiResult>(result), listPtr.ToList<MDataKeyFfi>(size));
     }
@@ -1296,7 +1291,6 @@ namespace SafeApp.AppBindings {
     public static extern void Sha3HashNative(IntPtr data, IntPtr len, IntPtr self, ByteArrayCb callback);
 
     #endregion
-
   }
 }
 
