@@ -30,14 +30,8 @@ namespace SafeApp.Tests {
       var encKeyPairTuple = await Crypto.EncGenerateKeyPairAsync();
       Assert.NotNull(encKeyPairTuple.Item1);
       Assert.NotNull(encKeyPairTuple.Item2);
-      await Crypto.EncPubKeyFreeAsync(encKeyPairTuple.Item1);
-      await Crypto.EncSecretKeyFreeAsync(encKeyPairTuple.Item2);
-    }
-
-    [Test]
-    public async Task GenerateNonce() {
-      var nonce = await Crypto.GenerateNonceAsync();
-      Assert.NotNull(nonce);
+      using (var pub = encKeyPairTuple.Item1)
+      using (var sec = encKeyPairTuple.Item2) { }
     }
 
     [Test]
@@ -54,16 +48,17 @@ namespace SafeApp.Tests {
       var encKeyPairTuple = await Crypto.EncGenerateKeyPairAsync();
       Assert.NotNull(encKeyPairTuple.Item1);
       Assert.NotNull(encKeyPairTuple.Item2);
-      var rawKey = await Crypto.EncPubKeyGetAsync(encKeyPairTuple.Item1);
-      Assert.AreEqual(rawKey.Count, EncKeySize);
-      var handle = await Crypto.EncPubKeyNewAsync(rawKey);
-      Assert.NotNull(handle);
-      rawKey = await Crypto.EncSecretKeyGetAsync(encKeyPairTuple.Item2);
-      Assert.AreEqual(rawKey.Count, EncKeySize);
-      handle = await Crypto.EncSecretKeyNewAsync(rawKey);
-      Assert.NotNull(handle);
-      await Crypto.EncPubKeyFreeAsync(encKeyPairTuple.Item1);
-      await Crypto.EncSecretKeyFreeAsync(encKeyPairTuple.Item2);
+      using (var pub = encKeyPairTuple.Item1)
+      using (var sec = encKeyPairTuple.Item2) {
+        var rawKey = await Crypto.EncPubKeyGetAsync(pub);
+        Assert.AreEqual(rawKey.Count, EncKeySize);
+        var handle = await Crypto.EncPubKeyNewAsync(rawKey);
+        Assert.NotNull(handle);
+        rawKey = await Crypto.EncSecretKeyGetAsync(sec);
+        Assert.AreEqual(rawKey.Count, EncKeySize);
+        handle = await Crypto.EncSecretKeyNewAsync(rawKey);
+        Assert.NotNull(handle);
+      }
     }
 
     [Test]
@@ -72,16 +67,17 @@ namespace SafeApp.Tests {
       var signKeyPairTuple = await Crypto.SignGenerateKeyPairAsync();
       Assert.NotNull(signKeyPairTuple.Item1);
       Assert.NotNull(signKeyPairTuple.Item2);
-      var rawKey = await Crypto.SignPubKeyGetAsync(signKeyPairTuple.Item1);
-      Assert.AreEqual(rawKey.Count, EncKeySize);
-      var handle = await Crypto.SignPubKeyNewAsync(rawKey);
-      Assert.NotNull(handle);
-      rawKey = await Crypto.SignSecKeyGetAsync(signKeyPairTuple.Item2);
-      Assert.AreEqual(rawKey.Count, EncKeySize);
-      handle = await Crypto.SignSecKeyNewAsync(rawKey);
-      Assert.NotNull(handle);
-      await Crypto.SignPubKeyFreeAsync(signKeyPairTuple.Item1);
-      await Crypto.SignSecKeyFreeAsync(signKeyPairTuple.Item2);
+      using (var pub = signKeyPairTuple.Item1)
+      using (var sec = signKeyPairTuple.Item1) {
+        var rawKey = await Crypto.SignPubKeyGetAsync(signKeyPairTuple.Item1);
+        Assert.AreEqual(rawKey.Count, EncKeySize);
+        var handle = await Crypto.SignPubKeyNewAsync(rawKey);
+        Assert.NotNull(handle);
+        rawKey = await Crypto.SignSecKeyGetAsync(signKeyPairTuple.Item2);
+        Assert.AreEqual(rawKey.Count, EncKeySize);
+        handle = await Crypto.SignSecKeyNewAsync(rawKey);
+        Assert.NotNull(handle);
+      }
     }
 
     [Test]
@@ -93,24 +89,42 @@ namespace SafeApp.Tests {
       var plainBytes = new byte[1024];
       new Random().NextBytes(plainBytes);
       using (var pub = encKeyPairTuple.Item1)
-      using (var sign = encKeyPairTuple.Item2) {
+      using (var sec = encKeyPairTuple.Item2) {
         var cipherBytes = await Crypto.EncryptSealedBoxAsync(plainBytes.ToList(), pub);
-        var decryptedBytes = await Crypto.DecryptSealedBoxAsync(cipherBytes, pub, sign);
+        var decryptedBytes = await Crypto.DecryptSealedBoxAsync(cipherBytes, pub, sec);
         Assert.AreEqual(plainBytes, decryptedBytes);
       }
     }
 
     [Test]
-    public async Task Verify() {
+    public async Task VerifySignature() {
       var signKeyPairTuple = await Crypto.SignGenerateKeyPairAsync();
       Assert.NotNull(signKeyPairTuple.Item1);
       Assert.NotNull(signKeyPairTuple.Item2);
       var plainBytes = new byte[1024];
       new Random().NextBytes(plainBytes);
-      var signeddata = await Crypto.SignAsync(plainBytes.ToList(), signKeyPairTuple.Item2);
-      Assert.NotNull(signeddata);
-      var verifiedBytes = await Crypto.VerifyAsync(signeddata, signKeyPairTuple.Item1);
-      Assert.AreEqual(plainBytes, verifiedBytes);
+      using (var pub = signKeyPairTuple.Item1)
+      using (var sign = signKeyPairTuple.Item2) {
+        var signeddata = await Crypto.SignAsync(plainBytes.ToList(), sign);
+        var verifiedBytes = await Crypto.VerifyAsync(signeddata, pub);
+        Assert.AreEqual(plainBytes, verifiedBytes);
+      }
     }
+    [Test]
+    public async Task DataEncryptionusingNonce()
+    {
+      Utils.InitialiseSessionForRandomTestApp();
+      var encKeyPairTuple = await Crypto.EncGenerateKeyPairAsync();
+      var data = await Crypto.GenerateNonceAsync();
+      using (var pubkey = encKeyPairTuple.Item1)
+      using (var seckey = encKeyPairTuple.Item2)
+      {
+        var cipherBytes = await Crypto.EncryptAsync(data.ToList(), pubkey, seckey);
+        var decryptedBytes = await Crypto.DecryptAsync(cipherBytes, pubkey, seckey);
+        Assert.AreEqual(data, decryptedBytes);
+
+      }
+    }
+
   }
 }
