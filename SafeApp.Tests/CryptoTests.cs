@@ -109,8 +109,8 @@ namespace SafeApp.Tests {
       new Random().NextBytes(plainBytes);
       var signeddata = await Crypto.SignAsync(plainBytes.ToList(), signKeyPairTuple.Item2);
       Assert.NotNull(signeddata);
-      //var verifiedBytes = await Crypto.VerifyAsync(signeddata, signKeyPairTuple.Item1);
-      //Assert.AreEqual(plainBytes, verifiedBytes);
+      var verifiedBytes = await Crypto.VerifyAsync(signeddata, signKeyPairTuple.Item1);
+      Assert.AreEqual(plainBytes, verifiedBytes);
     }
   }
 }
