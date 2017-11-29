@@ -26,6 +26,14 @@ namespace SafeApp.Utilities {
       Action revokedCb,
       Action<FfiResult> errorCb);
 
+    void Decrypt(
+      IntPtr appPtr,
+      IntPtr data,
+      IntPtr len,
+      ulong encryptPubKeyHandle,
+      ulong encryptSecKeyHandle,
+      Action<FfiResult, IntPtr, IntPtr> callback);
+
     void DecryptSealedBox(
       IntPtr appPtr,
       IntPtr data,
@@ -39,11 +47,22 @@ namespace SafeApp.Utilities {
     void EncPubKeyFree(IntPtr appPtr, ulong encryptPubKeyHandle, Action<FfiResult> callback);
     void EncPubKeyGet(IntPtr appPtr, ulong encryptPubKeyHandle, Action<FfiResult, IntPtr> callback);
     void EncPubKeyNew(IntPtr appPtr, IntPtr asymPublicKey, Action<FfiResult, ulong> callback);
+
+    void Encrypt(
+      IntPtr appPtr,
+      IntPtr data,
+      IntPtr len,
+      ulong encryptPubKeyHandle,
+      ulong encryptSecKeyHandle,
+      Action<FfiResult, IntPtr, IntPtr> callback);
+
     void EncryptSealedBox(IntPtr appPtr, IntPtr data, IntPtr len, ulong pkHandle, Action<FfiResult, IntPtr, IntPtr> callback);
     void EncSecretKeyFree(IntPtr appPtr, ulong encryptSecKeyHandle, Action<FfiResult> callback);
     void EncSecretKeyGet(IntPtr appPtr, ulong encryptSecKeyHandle, Action<FfiResult, IntPtr> callback);
     void EncSecretKeyNew(IntPtr appPtr, IntPtr asymSecretKey, Action<FfiResult, ulong> callback);
     void FreeApp(IntPtr appPtr);
+
+    void GenerateNonce(Action<FfiResult, IntPtr> callback);
 
     void MDataEntriesForEach(
       IntPtr appPtr,
@@ -111,6 +130,24 @@ namespace SafeApp.Utilities {
     void MDataPermissionsNew(IntPtr appPtr, Action<FfiResult, ulong> callback);
     void MDataPut(IntPtr appPtr, IntPtr infoHandle, ulong permissionsHandle, ulong entriesHandle, Action<FfiResult> callback);
     void Sha3Hash(IntPtr data, IntPtr len, Action<FfiResult, IntPtr, IntPtr> callback);
+
+    void Sign(IntPtr appPtr, IntPtr data, IntPtr len, ulong signSeckeyHandle, Action<FfiResult, IntPtr, IntPtr> callback);
+
+    void SignGenerateKeyPair(IntPtr appPtr, Action<FfiResult, ulong, ulong> callback);
+
+    void SignPubKeyFree(IntPtr appPtr, ulong signPubKeyHandle, Action<FfiResult> callback);
+
+    void SignPubKeyGet(IntPtr appPtr, ulong signPubKeyHandle, Action<FfiResult, IntPtr> callback);
+
+    void SignPubKeyNew(IntPtr appPtr, IntPtr signPubKey, Action<FfiResult, ulong> callback);
+
+    void SignSecKeyFree(IntPtr appPtr, ulong signSecKeyHandle, Action<FfiResult> callback);
+
+    void SignSecKeyGet(IntPtr appPtr, ulong signSecKeyHandle, Action<FfiResult, IntPtr> callback);
+
+    void SignSecKeyNew(IntPtr appPtr, IntPtr signSecKey, Action<FfiResult, ulong> callback);
+
+    void Verify(IntPtr appPtr, IntPtr signdata, IntPtr len, ulong signPubkeyHandle, Action<FfiResult, IntPtr, IntPtr> callback);
 
     // ReSharper disable InconsistentNaming
     void IDataCloseSelfEncryptor(IntPtr appPtr, ulong seH, ulong cipherOptH, Action<FfiResult, IntPtr> callback);

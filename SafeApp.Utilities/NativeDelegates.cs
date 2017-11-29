@@ -23,6 +23,8 @@ namespace SafeApp.Utilities {
 
   public delegate void EncGenerateKeyPairCb(IntPtr self, IntPtr result, ulong encPubKeyHandle, ulong encSecKeyHandle);
 
+  public delegate void SignGenerateKeyPairCb(IntPtr self, IntPtr result, ulong signPubKeyHandle, ulong signSecKeyHandle);
+
   public delegate void EntriesForEachResultCb(IntPtr self, IntPtr result);
 
   public delegate void MDataKeysForEachResultCb(IntPtr self, IntPtr result);
