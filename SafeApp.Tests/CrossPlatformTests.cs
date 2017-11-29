@@ -18,7 +18,7 @@ namespace SafeApp.Tests {
       Assert.DoesNotThrow(() => appPtr = MockAuthResolver.Current.TestCreateApp());
       Assert.AreNotEqual(appPtr, IntPtr.Zero);
       Session.AppPtr = appPtr;
-      Assert.DoesNotThrow(async () => await MDataEntryActions.NewAsync());
+      Assert.DoesNotThrowAsync(async () => await MDataEntryActions.NewAsync());
     }
   }
 }

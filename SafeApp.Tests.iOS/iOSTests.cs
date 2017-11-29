@@ -25,8 +25,8 @@ namespace SafeApp.Tests.iOS {
         reader.Close();
       }
 
-      Assert.DoesNotThrow(async () => await Session.InitLoggingAsync(configPath));
-      Assert.Throws<Exception>(async () => await Session.DecodeIpcMessageAsync("Some Random Invalid String"));
+      Assert.DoesNotThrowAsync(async () => await Session.InitLoggingAsync(configPath));
+      Assert.ThrowsAsync<Exception>(async () => await Session.DecodeIpcMessageAsync("Some Random Invalid String"));
       Assert.IsFalse(string.IsNullOrEmpty(File.ReadAllText(Path.Combine(configPath, "Client.log"))));
     }
 #pragma warning restore IDE1006 // Naming Styles

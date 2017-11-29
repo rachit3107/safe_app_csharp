@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;__DESKTOP__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;__DESKTOP__</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SafeApp.Tests\AuthTests.cs" Link="Shared\AuthTests.cs" />
+    <Compile Include="..\SafeApp.Tests\CipherOptTests.cs" Link="Shared\CipherOptTests.cs" />
+    <Compile Include="..\SafeApp.Tests\CrossPlatformTests.cs" Link="Shared\CrossPlatformTests.cs" />
+    <Compile Include="..\SafeApp.Tests\CryptoTests.cs" Link="Shared\CryptoTests.cs" />
+    <Compile Include="..\SafeApp.Tests\ImmutableDataTests.cs" Link="Shared\ImmutableDataTests.cs" />
+    <Compile Include="..\SafeApp.Tests\MutableDataTests.cs" Link="Shared\MutableDataTests.cs" />
+    <Compile Include="..\SafeApp.Tests\Utils.cs" Link="Shared\Utils.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\SafeApp.AppBindings.Desktop\lib\mock\libsafe_app.dylib" Link="libsafe_app.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SafeApp.AppBindings.Desktop\lib\mock\libsafe_app.so" Link="libsafe_app.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\SafeApp.AppBindings.Desktop\lib\mock\safe_app.dll" Link="safe_app.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SafeApp.AppBindings.Desktop\SafeApp.AppBindings.Desktop.csproj" />
+    <ProjectReference Include="..\SafeApp.MockAuthBindings.Desktop\SafeApp.MockAuthBindings.Desktop.csproj" />
+    <ProjectReference Include="..\SafeApp.Utilities\SafeApp.Utilities.csproj" />
+    <ProjectReference Include="..\SafeApp\SafeApp.csproj" />
+  </ItemGroup>
+
+</Project>

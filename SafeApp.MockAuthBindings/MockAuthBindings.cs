@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD1_2
+﻿#if !NETSTANDARD1_2 || __DESKTOP__
 
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace SafeApp.MockAuthBindings {
 
 #if __IOS__
     [DllImport("__Internal", EntryPoint = "test_create_app")]
-#elif __ANDROID__
+#else
     [DllImport("safe_app", EntryPoint = "test_create_app")]
 #endif
     public static extern int TestCreateAppNative(out IntPtr appPtr);
@@ -69,7 +69,7 @@ namespace SafeApp.MockAuthBindings {
     }
 #if __IOS__
     [DllImport("__Internal", EntryPoint = "create_acc")]
-#elif __ANDROID__
+#else
     [DllImport("safe_app", EntryPoint = "create_acc")]
 #endif
     public static extern void CreateAccNative(
@@ -107,7 +107,7 @@ namespace SafeApp.MockAuthBindings {
 
 #if __IOS__
     [DllImport("__Internal", EntryPoint = "encode_auth_resp")]
-#elif __ANDROID__
+#else
     [DllImport("safe_app", EntryPoint = "encode_auth_resp")]
 #endif
     public static extern void EncodeAuthResponseNative(IntPtr authIntPtr, IntPtr authReq, uint reqId, [MarshalAs(UnmanagedType.U1)] bool isgranted, IntPtr userData,  EncodeAuthResponseCb callback);
@@ -146,7 +146,7 @@ namespace SafeApp.MockAuthBindings {
     }
 #if __IOS__
     [DllImport("__Internal", EntryPoint = "auth_decode_ipc_msg")]
-#elif __ANDROID__
+#else
     [DllImport("safe_app", EntryPoint = "auth_decode_ipc_msg")]
 #endif
     public static extern void AuthDecodeIpcMsgNative(IntPtr authIntPtr, string encodedReq,

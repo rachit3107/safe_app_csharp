@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using SafeApp.Misc;
 
@@ -7,7 +8,7 @@ namespace SafeApp.Tests {
   [TestFixture]
   internal class ImmutableDataTests {
     [Test]
-    public async void WriteAndReadUsingPainText() {
+    public async Task WriteAndReadUsingPainText() {
       var data = new byte[1024];
       new Random().NextBytes(data);
       Utils.InitialiseSessionForRandomTestApp();

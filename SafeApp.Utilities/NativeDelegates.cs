@@ -1,7 +1,6 @@
 ﻿using System;
 
 namespace SafeApp.Utilities {
-
   public delegate void DecodeErrorCb(IntPtr self, IntPtr result, uint reqId);
 
   public delegate void ResultCb(IntPtr self, IntPtr result);
@@ -55,5 +54,4 @@ namespace SafeApp.Utilities {
   public delegate void DecodeShareMDataCb(IntPtr self, uint reqId);
 
   public delegate void DecodeRevokedCb(IntPtr self);
-
 }

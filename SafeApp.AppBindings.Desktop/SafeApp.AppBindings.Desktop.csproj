@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.2</TargetFramework>
+    <AssemblyName>SafeApp.AppBindings</AssemblyName>
+    <RootNamespace>SafeApp.AppBindings</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;__DESKTOP__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;__DESKTOP__</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SafeApp.AppBindings\AppBindings.cs" Link="AppBindings.cs" />
+    <Compile Include="..\SafeApp.AppBindings\AppResolver.cs" Link="AppResolver.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SafeApp.Utilities\SafeApp.Utilities.csproj" />
+  </ItemGroup>
+  <Target Name="CheckNativeLibs" BeforeTargets="PrepareForBuild">
+    <ItemGroup>
+      <NativeSafeAppLibs Include="lib\**\*.*" />
+    </ItemGroup>
+    <Error Condition="'@(NativeSafeAppLibs-&gt;Count())' == '0'" Text="Missing Native Libs. Please run 'cargo script DownloadNativeLibs.crs' in root of repo." />
+  </Target>
+
+</Project>

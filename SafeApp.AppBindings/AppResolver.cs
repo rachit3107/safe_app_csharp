@@ -19,7 +19,7 @@ namespace SafeApp.AppBindings {
     }
 
     private static IAppBindings CreateBindings() {
-#if NETSTANDARD1_2
+#if NETSTANDARD1_2 && !__DESKTOP__
       return null;
 #else
       return new AppBindings();

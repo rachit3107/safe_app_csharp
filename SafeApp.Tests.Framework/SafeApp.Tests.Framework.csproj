@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8EDF4429-251A-416D-BB68-93F227191BCF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SafeApp.Tests.Framework</RootNamespace>
+    <AssemblyName>SafeApp.Tests.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SafeApp.Tests\AuthTests.cs">
+      <Link>Shared\AuthTests.cs</Link>
+    </Compile>
+    <Compile Include="..\SafeApp.Tests\CipherOptTests.cs">
+      <Link>Shared\CipherOptTests.cs</Link>
+    </Compile>
+    <Compile Include="..\SafeApp.Tests\CrossPlatformTests.cs">
+      <Link>Shared\CrossPlatformTests.cs</Link>
+    </Compile>
+    <Compile Include="..\SafeApp.Tests\CryptoTests.cs">
+      <Link>Shared\CryptoTests.cs</Link>
+    </Compile>
+    <Compile Include="..\SafeApp.Tests\ImmutableDataTests.cs">
+      <Link>Shared\ImmutableDataTests.cs</Link>
+    </Compile>
+    <Compile Include="..\SafeApp.Tests\MutableDataTests.cs">
+      <Link>Shared\MutableDataTests.cs</Link>
+    </Compile>
+    <Compile Include="..\SafeApp.Tests\Utils.cs">
+      <Link>Shared\Utils.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SafeApp.AppBindings.Desktop\SafeApp.AppBindings.Desktop.csproj">
+      <Project>{82da9f6b-b453-4794-8fd9-370cc9cd4a0a}</Project>
+      <Name>SafeApp.AppBindings.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SafeApp.MockAuthBindings.Desktop\SafeApp.MockAuthBindings.Desktop.csproj">
+      <Project>{795ec379-c7c5-4890-8f55-dbe595a1a7e9}</Project>
+      <Name>SafeApp.MockAuthBindings.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SafeApp.Utilities\SafeApp.Utilities.csproj">
+      <Project>{a0450f47-b05e-4c53-9845-7b89d708d3e3}</Project>
+      <Name>SafeApp.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SafeApp\SafeApp.csproj">
+      <Project>{82fd8e34-048c-4c74-b7a6-7cefc054f87d}</Project>
+      <Name>SafeApp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SafeApp.AppBindings.Desktop\lib\mock\safe_app.dll">
+      <Link>safe_app.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
