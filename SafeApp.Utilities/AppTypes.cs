@@ -14,6 +14,11 @@ namespace SafeApp.Utilities {
     public IntPtr DataPtr;
     public IntPtr Len;
   }
+  public struct MDataValueFfi
+  {
+    public IntPtr DataPtr;
+    public IntPtr Len;
+  }
 
   public struct FfiResult {
     public int ErrorCode;

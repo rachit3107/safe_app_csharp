@@ -5,7 +5,7 @@ using SafeApp.Misc;
 namespace SafeApp.Tests {
   [TestFixture]
   internal class CipherOptTests {
-    [Test]
+    /*[Test]
     public async Task CreatePlainCipherOpt() {
       Utils.InitialiseSessionForRandomTestApp();
       using (var handle = await CipherOpt.NewPlaintextAsync()) {
@@ -22,7 +22,7 @@ namespace SafeApp.Tests {
       }
       await Crypto.EncPubKeyFreeAsync(encKeyPairTuple.Item1);
       await Crypto.EncSecretKeyFreeAsync(encKeyPairTuple.Item2);
-    }*/
+    }
 
     [Test]
     public async Task NewSymmetric() {
@@ -30,6 +30,6 @@ namespace SafeApp.Tests {
       using (var handle = await CipherOpt.NewSymmetricAsync()) {
         Assert.NotNull(handle);
       }
-    }
+    }*/
   }
 }

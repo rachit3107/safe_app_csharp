@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using SafeApp.AppBindings;
@@ -401,5 +402,9 @@ namespace SafeApp.Misc {
 
       return tcs.Task;
     }
+
+
   }
 }
+
+

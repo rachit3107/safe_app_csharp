@@ -43,13 +43,18 @@ namespace SafeApp.Utilities {
 
   public delegate void MDataKeyListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size);
 
+  public delegate void MDataValueListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size);
+
   public delegate void MDataEntriesLenCb(IntPtr self, ulong len);
 
   public delegate void MDataGetValueCb(IntPtr self, FfiResult result, IntPtr data, IntPtr dataLen, ulong entryVersion);
 
+  public delegate void MDataEntriesGetCb(IntPtr self, FfiResult result, IntPtr contentptr, IntPtr contentlen, ulong entryVersion);
+
   public delegate void DecodeAuthCb(IntPtr self, uint reqId, IntPtr authGrantedFfiPtr);
 
   public delegate void DecodeUnregCb(IntPtr self, uint reqId, IntPtr bsConfig, IntPtr bsSize);
+
 
   public delegate void DecodeContCb(IntPtr self, uint reqId);
 

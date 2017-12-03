@@ -1017,6 +1017,160 @@ namespace SafeApp.AppBindings {
 
     #endregion
 
+    #region MDataEntriesGet
+
+    public void MDataEntryGet(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, Action<FfiResult, IntPtr, IntPtr, ulong> callback)
+    {
+      MDataEntryGetNative(appPtr, entriesHandle, keyPtr, keylen, callback.ToHandlePtr(), OnMDataEntriesGetCb);
+    }
+
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_entries_get")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_entries_get")]
+#endif
+    public static extern void MDataEntryGetNative(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, IntPtr self, MDataEntriesGetCb callback);
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(MDataEntriesGetCb))]
+#endif
+    private static void OnMDataEntriesGetCb(IntPtr self, FfiResult result, IntPtr contentptr, IntPtr contentlen, ulong entryVersion)
+    {
+      var cb = self.HandlePtrToType<Action<FfiResult, IntPtr, IntPtr, ulong>>();
+      cb(result, contentptr, contentlen, entryVersion);
+    }
+    #endregion
+
+    #region MDataEntryActionUpdate
+    public void MDataEntryActionUpdate(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, IntPtr valuePtr,
+      IntPtr valueLen, ulong version, Action<FfiResult> callback)
+    {
+      MDataEntryActionUpdateNative(appPtr, entriesHandle, keyPtr, keylen, valuePtr, valueLen, version, callback.ToHandlePtr(), OnResultCb);
+     }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_entry_actions_update")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_entry_actions_update")]
+#endif
+
+    public static extern void MDataEntryActionUpdateNative(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, IntPtr valuePtr,
+      IntPtr valueLen, ulong version, IntPtr self, ResultCb callback);
+
+    #endregion
+
+    #region MDataEntryActionDelete
+    public void MDataEntryActionDelete(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, ulong version, Action<FfiResult> callback)
+    {
+      MDataEntryActionDeleteNative(appPtr, entriesHandle, keyPtr, keylen, version, callback.ToHandlePtr(), OnResultCb);
+    }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_entry_actions_delete")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_entry_actions_delete")]
+#endif
+
+    public static extern void MDataEntryActionDeleteNative(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, ulong version, IntPtr self, ResultCb callback);
+
+    #endregion
+
+    #region MDataGetVersion
+
+    
+
+    public void MDataGetVersion(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, ulong> callback) {
+      MDataGetVersionNative(appPtr, mDataInfoPtr, callback.ToHandlePtr(), OnUlongCb);
+    }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_get_version")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_get_version")]
+#endif
+    public static extern void MDataGetVersionNative(IntPtr appPtr, IntPtr mDataInfoPtr, IntPtr self, UlongCb callback);
+    #endregion
+
+
+    #region MDataSerializedSize
+
+
+
+    public void MDataSerializedSize(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, ulong> callback)
+    {
+      MDataSerializedSizeNative(appPtr, mDataInfoPtr, callback.ToHandlePtr(), OnUlongCb);
+    }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_serialised_size")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_serialised_size")]
+#endif
+    public static extern void MDataSerializedSizeNative(IntPtr appPtr, IntPtr mDataInfoPtr, IntPtr self, UlongCb callback);
+    #endregion
+
+    #region MDataListValues
+    public void MDataListValues(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, List<MDataValueFfi>> callback)
+    {
+      MDataListValuesNative(appPtr, mDataInfoPtr, callback.ToHandlePtr(), OnMDataValueListCb);
+    }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_list_values")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_list_values")]
+#endif
+    public static extern void MDataListValuesNative(IntPtr appPtr, IntPtr mDataInfoPtr, IntPtr self, MDataValueListCb callback);
+
+#if __IOS__
+    [MonoPInvokeCallback(typeof(MDataValueListCb))]
+#endif
+    private static void OnMDataValueListCb(IntPtr self, IntPtr result, IntPtr listPtr, IntPtr size)
+    {
+      var cb = self.HandlePtrToType<Action<FfiResult, List<MDataValueFfi>>>();
+      cb(Marshal.PtrToStructure<FfiResult>(result), listPtr.ToList<MDataValueFfi>(size));
+    }
+
+    #endregion
+
+    #region MDataListUserPermissions
+
+    public void MDataListUserPermissions(IntPtr appPtr, IntPtr mDataInfoPtr, ulong signpubkeyH, Action<FfiResult, IntPtr> callback) {
+      MDataListUserPermissionsNative(appPtr, mDataInfoPtr, signpubkeyH, callback.ToHandlePtr(), OnIntPtrCb);
+ }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_list_user_permissions")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_list_user_permissions")]
+#endif
+    public static extern void MDataListUserPermissionsNative(IntPtr appPtr, IntPtr mDataInfoPtr, ulong signpubkeyH, IntPtr self, IntPtrCb callback);
+
+
+    #endregion
+
+    #region MdataPermissionLen
+    public void MdataPermissionLen(IntPtr appPtr, ulong mdatPermissionHandle, Action<FfiResult, ulong> callback) {
+      MdataPermissionLenNative(appPtr, mdatPermissionHandle, callback.ToHandlePtr(), OnUlongCb);
+  }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_permissions_len")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_permissions_len")]
+#endif
+
+    public static extern void MdataPermissionLenNative(IntPtr appPtr, ulong mdatPermissionHandle, IntPtr self, UlongCb callback);
+
+
+    #endregion
+
+    #region MdataPermissionGet
+    public void MdataPermissionGet(IntPtr appPtr, ulong mdatPermissionHandle, ulong signPubKeyH, Action<FfiResult, IntPtr> callback) {
+      MdataPermissionGetNative(appPtr, mdatPermissionHandle, signPubKeyH, callback.ToHandlePtr(), OnIntPtrCb);
+ }
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_permissions_len")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_permissions_len")]
+#endif
+    public static extern void MdataPermissionGetNative(IntPtr appPtr, ulong mdatPermissionHandle, ulong signPubKeyH, IntPtr self, IntPtrCb callback);
+
+#endregion
+
     #region MDataEntryActionsFree
 
     public void MDataEntryActionsFree(IntPtr appPtr, ulong actionsHandle, Action<FfiResult> callback) {
@@ -1337,6 +1491,22 @@ namespace SafeApp.AppBindings {
     [DllImport("safe_app", EntryPoint = "mdata_list_entries")]
 #endif
     public static extern void MDataListEntriesNative(IntPtr appPtr, IntPtr infoHandle, IntPtr self, UlongCb callback);
+
+    #endregion
+
+    #region MDataListPermissions
+
+    public void MDataListPermissions(IntPtr appPtr, IntPtr infoHandle, Action<FfiResult, ulong> callback)
+    {
+      MDataListPermissionsNative(appPtr, infoHandle, callback.ToHandlePtr(), OnUlongCb);
+    }
+
+#if __IOS__
+    [DllImport("__Internal", EntryPoint = "mdata_list_permissions")]
+#else
+    [DllImport("safe_app", EntryPoint = "mdata_list_permissions")]
+#endif
+    public static extern void MDataListPermissionsNative(IntPtr appPtr, IntPtr infoHandle, IntPtr self, UlongCb callback);
 
     #endregion
 

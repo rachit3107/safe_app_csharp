@@ -85,6 +85,28 @@ namespace SafeApp.Utilities {
     void MDataEntriesNew(IntPtr appPtr, Action<FfiResult, ulong> callback);
     void MDataEntryActionsFree(IntPtr appPtr, ulong actionsHandle, Action<FfiResult> callback);
 
+    void MDataEntryGet(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, Action<FfiResult, IntPtr, IntPtr, ulong> callback);
+
+    void MDataEntryActionUpdate(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen, IntPtr valuePtr,
+      IntPtr valueLen, ulong version,  Action <FfiResult> callback);
+
+    void MDataEntryActionDelete(IntPtr appPtr, ulong entriesHandle, IntPtr keyPtr, IntPtr keylen,ulong version, Action<FfiResult> callback);
+
+    void MDataGetVersion(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, ulong> callback);
+
+    void MDataSerializedSize(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, ulong> callback);
+
+    void MDataListValues(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, List<MDataValueFfi>> callback);
+
+    void MDataListPermissions(IntPtr appPtr, IntPtr mDataInfoPtr, Action<FfiResult, ulong> callback);
+
+    void MDataListUserPermissions(IntPtr appPtr, IntPtr mDataInfoPtr, ulong signpubkeyH, Action<FfiResult, IntPtr> callback);
+
+    void MdataPermissionLen(IntPtr appPtr, ulong mdatPermissionHandle, Action<FfiResult, ulong> callback);
+
+    void MdataPermissionGet(IntPtr appPtr, ulong mdatPermissionHandle, ulong signPubKeyH, Action<FfiResult, IntPtr> callback);
+
+    //void MdataListPermissionSets(IntPtr appPtr, ulong mdatPermissionHandle, );
     void MDataEntryActionsInsert(
       IntPtr appPtr,
       ulong actionsHandle,

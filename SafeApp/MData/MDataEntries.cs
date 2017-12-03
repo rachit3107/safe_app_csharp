@@ -50,30 +50,29 @@ namespace SafeApp.MData {
 
       return tcs.Task;
     }
+    public static Task<(IntPtr, ulong)> MDataEntryGetAsync(NativeHandle entriesH, List<byte> key)
+    {
+      var tcs = new TaskCompletionSource<(IntPtr, ulong)>();
 
-    public static Task InsertAsync(NativeHandle entriesH, List<byte> entKey, List<byte> entVal) {
-      var tcs = new TaskCompletionSource<object>();
-
-      Action<FfiResult> callback = result => {
-        if (result.ErrorCode != 0) {
+      var keyPtr = key.ToIntPtr();
+      Action<FfiResult, IntPtr, IntPtr, ulong> callback = (result, contentPtr, contentlen, entryVersion) => {
+        if (result.ErrorCode != 0)
+        {
           tcs.SetException(result.ToException());
           return;
         }
 
-        tcs.SetResult(null);
+        
+        tcs.SetResult((contentPtr, entryVersion));
+
       };
-
-      var entKeyPtr = entKey.ToIntPtr();
-      var entValPtr = entVal.ToIntPtr();
-
-      AppBindings.MDataEntriesInsert(Session.AppPtr, entriesH, entKeyPtr, (IntPtr)entKey.Count, entValPtr, (IntPtr)entVal.Count, callback);
-
-      Marshal.FreeHGlobal(entKeyPtr);
-      Marshal.FreeHGlobal(entValPtr);
+      
+      
+      AppBindings.MDataEntryGet(Session.AppPtr, entriesH, keyPtr, (IntPtr)key.Count, callback);
+      Marshal.FreeHGlobal(keyPtr);
 
       return tcs.Task;
     }
-
     public static Task<ulong> LenAsync(NativeHandle entriesHandle) {
       var tcs = new TaskCompletionSource<ulong>();
       Action<FfiResult, ulong> callback = (result, len) => {
@@ -89,21 +88,7 @@ namespace SafeApp.MData {
       return tcs.Task;
     }
 
-    public static Task<NativeHandle> NewAsync() {
-      var tcs = new TaskCompletionSource<NativeHandle>();
+    
 
-      Action<FfiResult, ulong> callback = (result, entriesH) => {
-        if (result.ErrorCode != 0) {
-          tcs.SetException(result.ToException());
-          return;
-        }
-
-        tcs.SetResult(new NativeHandle(entriesH, FreeAsync));
-      };
-
-      AppBindings.MDataEntriesNew(Session.AppPtr, callback);
-
-      return tcs.Task;
-    }
   }
 }

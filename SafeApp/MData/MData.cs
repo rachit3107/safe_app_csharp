@@ -51,6 +51,44 @@ namespace SafeApp.MData {
       return tcs.Task;
     }
 
+    public static Task<NativeHandle> ListPermissionsAsync(MDataInfo info)
+    {
+      var tcs = new TaskCompletionSource<NativeHandle>();
+      var infoPtr = Helpers.StructToPtr(info);
+      Action<FfiResult, ulong> callback = (result, mDataPermissionsHandle) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+
+        tcs.SetResult(new NativeHandle(mDataPermissionsHandle, MDataEntries.FreeAsync));
+      };
+
+      AppBindings.MDataListEntries(Session.AppPtr, infoPtr, callback);
+      Marshal.FreeHGlobal(infoPtr);
+
+      return tcs.Task;
+    }
+    public static Task<List<List<byte>>> ListValuesAsync(MDataInfo info)
+    {
+      var tcs = new TaskCompletionSource<List<List<byte>>>();
+      var infoPtr = Helpers.StructToPtr(info);
+      Action<FfiResult, List<MDataValueFfi>> callback = (result, mDatavalue) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+
+        tcs.SetResult(mDatavalue.Select(k => k.DataPtr.ToList<byte>(k.Len)).ToList());
+      };
+
+      AppBindings.MDataListValues(Session.AppPtr, infoPtr, callback);
+      Marshal.FreeHGlobal(infoPtr);
+
+      return tcs.Task;
+    }
     public static Task<List<List<byte>>> ListKeysAsync(MDataInfo mDataInfo) {
       var tcs = new TaskCompletionSource<List<List<byte>>>();
       var infoPtr = Helpers.StructToPtr(mDataInfo);
@@ -100,5 +138,45 @@ namespace SafeApp.MData {
 
       return tcs.Task;
     }
+    public static Task<ulong> GetVersionAsync(MDataInfo mDataInfo)
+    {
+      var tcs = new TaskCompletionSource<ulong>();
+     
+      
+      Action<FfiResult, ulong> callback = (result, version) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+
+        tcs.SetResult(version);
+      };
+      var mDataInfoPtr = Helpers.StructToPtr(mDataInfo);
+      AppBindings.MDataGetVersion(Session.AppPtr, mDataInfoPtr, callback);
+      return tcs.Task;
+
+    }
+
+   
+    public static Task GetSerializedSizeAsync(MDataInfo mDataInfo)
+    {
+      var tcs = new TaskCompletionSource<object>();
+
+      Action<FfiResult, ulong> callback = (result, size) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+
+        tcs.SetResult(size);
+      };
+      var mDatainfoPtr = Helpers.StructToPtr(mDataInfo);
+      AppBindings.MDataSerializedSize(Session.AppPtr, mDatainfoPtr, callback);
+
+      return tcs.Task;
+    }
+
   }
 }
