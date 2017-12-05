@@ -23,7 +23,7 @@ namespace SafeApp.Utilities {
     }
 
     public static implicit operator ulong(NativeHandle obj) {
-      return obj._handle;
+      return obj?._handle ?? 0;
     }
 
     private void ReleaseUnmanagedResources() {

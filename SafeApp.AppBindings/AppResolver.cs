@@ -4,8 +4,9 @@ using SafeApp.Utilities;
 
 namespace SafeApp.AppBindings {
   public class AppResolver {
-    private static readonly Lazy<IAppBindings> Implementation =
-      new Lazy<IAppBindings>(CreateBindings, LazyThreadSafetyMode.PublicationOnly);
+    private static readonly Lazy<IAppBindings> Implementation = new Lazy<IAppBindings>(
+      CreateBindings,
+      LazyThreadSafetyMode.PublicationOnly);
 
     public static IAppBindings Current {
       get {
@@ -18,7 +19,7 @@ namespace SafeApp.AppBindings {
     }
 
     private static IAppBindings CreateBindings() {
-#if NETSTANDARD1_2
+#if NETSTANDARD1_2 && !__DESKTOP__
       return null;
 #else
       return new AppBindings();

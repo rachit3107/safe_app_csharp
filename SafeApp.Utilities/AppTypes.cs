@@ -10,6 +10,16 @@ namespace SafeApp.Utilities {
     kManagePermissions
   }
 
+  public struct MDataKeyFfi {
+    public IntPtr DataPtr;
+    public IntPtr Len;
+  }
+  public struct MDataValueFfi
+  {
+    public IntPtr DataPtr;
+    public IntPtr Len;
+  }
+
   public struct FfiResult {
     public int ErrorCode;
     public string Description;
@@ -84,5 +94,16 @@ namespace SafeApp.Utilities {
     public uint? ContReqId;
     public uint? ShareMData;
     public bool? Revoked;
+  }
+
+  public struct MDataInfo {
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)] public byte[] Name;
+    public ulong TypeTag;
+    [MarshalAs(UnmanagedType.U1)] public bool HasEncInfo;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public byte[] EncKey;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)] public byte[] EncNonce;
+    [MarshalAs(UnmanagedType.U1)] public bool HasNewEncInfo;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)] public byte[] NewEncKey;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)] public byte[] NewEncNonce;
   }
 }

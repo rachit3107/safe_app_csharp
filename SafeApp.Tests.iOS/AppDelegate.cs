@@ -1,19 +1,40 @@
-﻿using System.Reflection;
+﻿// ***********************************************************************
+// Copyright (c) 2017 Charlie Poole
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// ***********************************************************************
+
+using System.IO;
 using Foundation;
-using MonoTouch.NUnit.UI;
+using NUnit.Runner;
+using NUnit.Runner.Services;
 using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace SafeApp.Tests.iOS {
   // The UIApplicationDelegate for the application. This class is responsible for launching the 
   // User Interface of the application, as well as listening (and optionally responding) to 
   // application events from iOS.
   [Register("AppDelegate")]
-  public class AppDelegate : UIApplicationDelegate {
-    private TouchRunner _runner;
-
-    // class-level declarations
-    private UIWindow _window;
-
+  public class AppDelegate : FormsApplicationDelegate {
     //
     // This method is invoked when the application has loaded and is ready to run. In this 
     // method you should instantiate the window, load the UI into it and then make the window
@@ -22,19 +43,40 @@ namespace SafeApp.Tests.iOS {
     // You have 17 seconds to return from this method, or iOS will terminate your application.
     //
     public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
-      // create a new window instance based on the screen size
-      _window = new UIWindow(UIScreen.MainScreen.Bounds);
-      _runner = new TouchRunner(_window);
+      Forms.Init();
 
-      // register every tests included in the main application/assembly
-      _runner.Add(Assembly.GetExecutingAssembly());
+      // This will load all tests within the current project
+      var nunit = new App {
+        Options = new TestOptions {
+          // If True, the tests will run automatically when the app starts
+          // otherwise you must run them manually.
+          AutoRun = true,
 
-      _window.RootViewController = new UINavigationController(_runner.GetViewController());
+          // If True, the application will terminate automatically after running the tests.
+          //TerminateAfterExecution = true,
 
-      // make the window visible
-      _window.MakeKeyAndVisible();
+          // Information about the tcp listener host and port.
+          // For now, send result as XML to the listening server.
+          //TcpWriterParameters = new TcpWriterInfo("192.168.0.108", 13000),
 
-      return true;
+          // Creates a NUnit Xml result file on the host file system using PCLStorage library.
+          CreateXmlResultFile = true,
+
+          // Choose a different path for the xml result file (ios file share / library directory)
+          ResultFilePath = Path.Combine(
+            NSFileManager.DefaultManager.GetUrls(NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomain.User)[0].Path,
+            "Results.xml")
+        }
+      };
+
+      // If you want to add tests in another assembly
+      //nunit.AddTestAssembly(typeof(MyTests).Assembly);
+
+      // Available options for testing
+
+      LoadApplication(nunit);
+
+      return base.FinishedLaunching(app, options);
     }
   }
 }

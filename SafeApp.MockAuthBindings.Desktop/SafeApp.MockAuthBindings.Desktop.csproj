@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.2</TargetFramework>
+    <AssemblyName>SafeApp.MockAuthBindings</AssemblyName>
+    <RootNamespace>SafeApp.MockAuthBindings</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;__DESKTOP__</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;__DESKTOP__</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SafeApp.MockAuthBindings\MockAuthBindings.cs" Link="MockAuthBindings.cs" />
+    <Compile Include="..\SafeApp.MockAuthBindings\MockAuthResolver.cs" Link="MockAuthResolver.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SafeApp.Utilities\SafeApp.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
