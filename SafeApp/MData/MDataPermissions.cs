@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using SafeApp.AppBindings;
 using SafeApp.Utilities;
@@ -10,7 +13,7 @@ namespace SafeApp.MData {
 
     public static Task FreeAsync(ulong permissionsH) {
       var tcs = new TaskCompletionSource<object>();
-      ResultCb callback = (_, result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -24,10 +27,11 @@ namespace SafeApp.MData {
       return tcs.Task;
     }
 
-    public static Task InsertAsync(NativeHandle permissionsH, NativeHandle forUserH, NativeHandle permissionSetH) {
+    public static Task InsertAsync(NativeHandle permissionsH, NativeHandle forUserH, PermissionSet permissionSet) {
       var tcs = new TaskCompletionSource<object>();
+      var permissionSetPtr = Helpers.StructToPtr(permissionSet);
 
-      ResultCb callback = (_, result) => {
+      Action<FfiResult> callback = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -36,15 +40,40 @@ namespace SafeApp.MData {
         tcs.SetResult(null);
       };
 
-      AppBindings.MDataPermissionsInsert(Session.AppPtr, permissionsH, forUserH, permissionSetH, callback);
+      AppBindings.MDataPermissionsInsert(Session.AppPtr, permissionsH, forUserH, permissionSetPtr, callback);
+      Marshal.FreeHGlobal(permissionSetPtr);
 
       return tcs.Task;
     }
 
+    /*public static Task<List<PermissionSet>> ListPermissionsAsync(MDataInfo info, NativeHandle signPubKeyH)
+    {
+      var tcs = new TaskCompletionSource<List<PermissionSet>>();
+      var infoPtr = Helpers.StructToPtr(info);
+
+      Action<FfiResult, IntPtr> callback = (result, permissionsetPtr) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+        var permissionSet = Marshal.PtrToStructure<PermissionSet>(permissionsetPtr);
+
+        tcs.SetResult((permissionSet.Select(k => k.DataPtr.ToList<byte>(k.Len)).ToList()));
+      };
+
+      AppBindings.MDataPermissionsInsert(Session.AppPtr, permissionsH, forUserH, permissionSetPtr, callback);
+      Marshal.FreeHGlobal(permissionSetPtr);
+
+      return tcs.Task;
+    }*/
+
+   
+
     public static Task<NativeHandle> NewAsync() {
       var tcs = new TaskCompletionSource<NativeHandle>();
 
-      UlongCb callback = (_, result, permissionsH) => {
+      Action<FfiResult, ulong> callback = (result, permissionsH) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -54,6 +83,40 @@ namespace SafeApp.MData {
       };
 
       AppBindings.MDataPermissionsNew(Session.AppPtr, callback);
+
+      return tcs.Task;
+    }
+
+    public static Task<ulong> PermissionLenAsync(NativeHandle mdatPermissionHandle)
+    {
+      var tcs = new TaskCompletionSource<ulong>();
+      Action<FfiResult, ulong> callback = (result, len) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+        tcs.SetResult(len);
+      };
+
+      AppBindings.MDataEntriesLen(Session.AppPtr, mdatPermissionHandle, callback);
+
+      return tcs.Task;
+    }
+    public static Task<PermissionSet> PermissionGetAsync(NativeHandle mdatPermissionHandle, NativeHandle signPubKeyNativeHandle)
+    {
+      var tcs = new TaskCompletionSource<PermissionSet>();
+      Action<FfiResult, IntPtr> callback = (result, permissionsetPtr) => {
+        if (result.ErrorCode != 0)
+        {
+          tcs.SetException(result.ToException());
+          return;
+        }
+        var permissionSet = Marshal.PtrToStructure<PermissionSet>(permissionsetPtr);
+        tcs.SetResult(permissionSet);
+      };
+
+      AppBindings.MdataPermissionGet(Session.AppPtr, mdatPermissionHandle, signPubKeyNativeHandle, callback);
 
       return tcs.Task;
     }

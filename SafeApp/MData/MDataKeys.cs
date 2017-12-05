@@ -13,12 +13,12 @@ namespace SafeApp.MData {
     public static Task<List<List<byte>>> ForEachAsync(NativeHandle entKeysH) {
       var tcs = new TaskCompletionSource<List<List<byte>>>();
       var keys = new List<List<byte>>();
-      MDataKeysForEachCb forEachCb = (_, bytePtr, len) => {
-        var key = bytePtr.ToList<byte>(len);
+      Action<MDataKeyFfi> forEachCb = mdataKey => {
+        var key = mdataKey.DataPtr.ToList<byte>(mdataKey.Len);
         keys.Add(key);
       };
 
-      ResultCb forEachResCb = (_, result) => {
+      Action<FfiResult> forEachResCb = result => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;
@@ -32,25 +32,9 @@ namespace SafeApp.MData {
       return tcs.Task;
     }
 
-    public static Task FreeAsync(ulong entKeysH) {
-      var tcs = new TaskCompletionSource<object>();
-      ResultCb callback = (_, result) => {
-        if (result.ErrorCode != 0) {
-          tcs.SetException(result.ToException());
-          return;
-        }
-
-        tcs.SetResult(null);
-      };
-
-      AppBindings.MDataKeysFree(Session.AppPtr, entKeysH, callback);
-
-      return tcs.Task;
-    }
-
     public static Task<IntPtr> LenAsync(NativeHandle mDataInfoH) {
       var tcs = new TaskCompletionSource<IntPtr>();
-      IntPtrCb callback = (_, result, len) => {
+      Action<FfiResult, IntPtr> callback = (result, len) => {
         if (result.ErrorCode != 0) {
           tcs.SetException(result.ToException());
           return;

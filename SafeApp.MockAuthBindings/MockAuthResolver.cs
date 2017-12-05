@@ -18,7 +18,7 @@ namespace SafeApp.MockAuthBindings {
     }
 
     private static IMockAuthBindings CreateBindings() {
-#if NETSTANDARD1_2
+#if NETSTANDARD1_2 && !__DESKTOP__
       return null;
 #else
       return new MockAuthBindings();

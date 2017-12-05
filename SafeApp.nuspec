@@ -10,7 +10,7 @@
       Safe App Library for CSharp to interface with the SAFE Network.
     </description>
     <summary>Safe App Library.</summary>
-    <tags>android, ios, csharp, netstandard1.2, xamarin</tags>
+    <tags>android, ios, csharp, netstandard, xamarin, netcoreapp, netframework</tags>
     <projectUrl>https://github.com/maidsafe/safe_app_csharp/</projectUrl>
     <licenseUrl>https://github.com/maidsafe/safe_app_csharp/blob/master/LICENSE</licenseUrl>
     <iconUrl>https://raw.githubusercontent.com/maidsafe/safe_app_csharp/master/package_icon.png</iconUrl>
@@ -20,6 +20,12 @@
       <group targetFramework="MonoAndroid412">
       </group>
       <group targetFramework="Xamarin.iOS10">
+      </group>
+      <group targetFramework="netcoreapp1.0">
+        <dependency id="System.ValueTuple" version="4.4.0" />
+      </group>
+      <group targetFramework="net451">
+        <dependency id="System.ValueTuple" version="4.4.0" />
       </group>
     </dependencies>
   </metadata>
@@ -76,5 +82,42 @@
           target="lib\Xamarin.iOS10\SafeApp.Utilities.dll" />
     <file src="SafeApp.Utilities\bin\Release\netstandard1.2\SafeApp.Utilities.pdb"
           target="lib\Xamarin.iOS10\SafeApp.Utilities.pdb" />
+
+    <!--Desktop - NetCore-->
+    <file src="SafeApp.AppBindings.Desktop\NetCore.targets" target="build\netcoreapp1.0\MaidSafe.SafeApp.targets" />
+    <file src="SafeApp.AppBindings.Desktop\lib\**" target="build\netcoreapp1.0\lib" />
+    <file src="SafeApp\bin\Release\netstandard1.2\SafeApp.dll" target="lib\netcoreapp1.0\SafeApp.dll" />
+    <file src="SafeApp\bin\Release\netstandard1.2\SafeApp.pdb" target="lib\netcoreapp1.0\SafeApp.pdb" />
+    <file src="SafeApp.AppBindings.Desktop\bin\Release\netstandard1.2\SafeApp.AppBindings.dll"
+          target="lib\netcoreapp1.0\SafeApp.AppBindings.dll" />
+    <file src="SafeApp.AppBindings.Desktop\bin\Release\netstandard1.2\SafeApp.AppBindings.pdb"
+          target="lib\netcoreapp1.0\SafeApp.AppBindings.pdb" />
+    <file src="SafeApp.MockAuthBindings.Desktop\bin\Release\netstandard1.2\SafeApp.MockAuthBindings.dll"
+          target="build\netcoreapp1.0\SafeApp.MockAuthBindings.dll" />
+    <file src="SafeApp.MockAuthBindings.Desktop\bin\Release\netstandard1.2\SafeApp.MockAuthBindings.pdb"
+          target="build\netcoreapp1.0\SafeApp.MockAuthBindings.pdb" />
+    <file src="SafeApp.Utilities\bin\Release\netstandard1.2\SafeApp.Utilities.dll"
+          target="lib\netcoreapp1.0\SafeApp.Utilities.dll" />
+    <file src="SafeApp.Utilities\bin\Release\netstandard1.2\SafeApp.Utilities.pdb"
+          target="lib\netcoreapp1.0\SafeApp.Utilities.pdb" />
+
+    <!--Desktop - NetFramework-->
+    <file src="SafeApp.AppBindings.Desktop\NetFramework.targets" target="build\net451\MaidSafe.SafeApp.targets" />
+    <file src="SafeApp.AppBindings.Desktop\lib\mock\safe_app.dll" target="build\net451\lib\mock\safe_app.dll" />
+    <file src="SafeApp.AppBindings.Desktop\lib\non-mock\safe_app.dll" target="build\net451\lib\non-mock\safe_app.dll" />
+    <file src="SafeApp\bin\Release\netstandard1.2\SafeApp.dll" target="lib\net451\SafeApp.dll" />
+    <file src="SafeApp\bin\Release\netstandard1.2\SafeApp.pdb" target="lib\net451\SafeApp.pdb" />
+    <file src="SafeApp.AppBindings.Desktop\bin\Release\netstandard1.2\SafeApp.AppBindings.dll"
+          target="lib\net451\SafeApp.AppBindings.dll" />
+    <file src="SafeApp.AppBindings.Desktop\bin\Release\netstandard1.2\SafeApp.AppBindings.pdb"
+          target="lib\net451\SafeApp.AppBindings.pdb" />
+    <file src="SafeApp.MockAuthBindings.Desktop\bin\Release\netstandard1.2\SafeApp.MockAuthBindings.dll"
+          target="build\net451\SafeApp.MockAuthBindings.dll" />
+    <file src="SafeApp.MockAuthBindings.Desktop\bin\Release\netstandard1.2\SafeApp.MockAuthBindings.pdb"
+          target="build\net451\SafeApp.MockAuthBindings.pdb" />
+    <file src="SafeApp.Utilities\bin\Release\netstandard1.2\SafeApp.Utilities.dll"
+          target="lib\net451\SafeApp.Utilities.dll" />
+    <file src="SafeApp.Utilities\bin\Release\netstandard1.2\SafeApp.Utilities.pdb"
+          target="lib\net451\SafeApp.Utilities.pdb" />
   </files>
 </package>
